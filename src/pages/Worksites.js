@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import axiosInstance from '../axios';
 import Worksite from '../Components/Worksite';
 import WorksiteLoadingComponent from '../Components/WorksiteLoading';
 import WorksitesDrawer from '../Components/WorksitesDrawer';
@@ -13,11 +14,17 @@ function Worksites() {
 
   useEffect(() => {
     setWorksiteState({ loading: true });
-    const apiUrl = `http://127.0.0.1:8000/api/worksite/`;
-    fetch(apiUrl)
-      .then((data) => data.json())
-      .then((worksites) => {
+
+    axiosInstance
+      .get('/worksite/')
+      .then(response => {
+        const worksites = response.data;
+        console.log(worksites)
         setWorksiteState({ loading: false, worksites: worksites});
+      })
+      .catch(error => {
+        console.error('Une erreur s\'est produite lors de la récupération des chantiers :', error);
+        setWorksiteState({ loading: false, worksites: [] });
       });
   }, [setWorksiteState]);
 

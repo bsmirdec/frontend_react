@@ -15,6 +15,7 @@ const drawerWidth = 240;
 const WorksitesDrawer = (props) => {
   const { worksites } = props;
 
+  console.log(worksites)
   function displayWorksite(worksite_id) {
     const worksitesFilteredActive= worksites.find(
       (worksite) => worksite.worksite_id === worksite_id
@@ -27,7 +28,28 @@ const WorksitesDrawer = (props) => {
     }
   }
 
-    if (!worksites || worksites.length === 0) return <p>Pas de chantier</p>
+    if (!worksites || worksites.length === 0) 
+      return <p>Pas de chantier chargé</p>
+      // return (
+      //   <Box sx={{ display: 'flex' }}>
+      //     <CssBaseline />
+      //     <Drawer
+      //       variant="permanent"
+      //       sx={{
+      //         width: drawerWidth,
+      //         flexShrink: 0,
+      //         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position:'inherit'},
+      //       }}
+      //     >
+      //       <Box sx={{ overflow: 'auto' }}>
+      //         <ListItemButton>
+      //           Créer Nouveau Chantier
+      //         </ListItemButton>
+      //       </Box>
+      //     </Drawer> 
+      //   </Box>
+      // )
+    
     return (
         <Box sx={{ display: 'flex' }}>
           <CssBaseline />
@@ -40,10 +62,10 @@ const WorksitesDrawer = (props) => {
             }}
           >
             <Box sx={{ overflow: 'auto' }}>
-                <ListItemButton>
+              <ListItemButton>
                 Créer Nouveau Chantier
-                </ListItemButton>
-                <Divider />
+              </ListItemButton>
+              <Divider />
               <List>
                 {worksites.map((worksite) => (
                   <ListItem key={worksite.name} disablePadding>

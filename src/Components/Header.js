@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+// Material UI
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,12 +16,12 @@ import MenuItem from '@mui/material/MenuItem';
 import logo from "../assets/cobat-logo.png"
 import { Link } from 'react-router-dom';
 
-const pages = [{adress: 'worksites',name :'Chantier'}, {adress:'command', name:'Commande'}, {adress:'contacts', name:'Contacts'}];
-const settings = ['Mon Profil', 'Mon Compte', 'Déconnexion'];
+const pages = [{adress: 'worksite',name :'Chantier'}, {adress:'command', name:'Commande'}, {adress:'contacts', name:'Contacts'}];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -35,6 +37,11 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    handleCloseUserMenu();
+    navigate("/logout")}
 
   return (
     <AppBar position="static">
@@ -132,7 +139,14 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-
+          <nav>
+              <Link to="/create">
+                Register
+              </Link>
+              <Link to="/login">
+                Se connecter
+              </Link>
+          </nav>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -155,11 +169,13 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <p></p>
+              <MenuItem key="account" onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">Mon compte</Typography>
+              </MenuItem>
+              <MenuItem key="logout" onClick={handleLogout}>
+                <Typography textAlign="center">Déconnexion</Typography>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
