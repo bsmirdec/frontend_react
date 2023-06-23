@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axiosInstance from '../../axios';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 // Material UI
 import Avatar from '@mui/material/Avatar';
@@ -18,7 +19,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function LogIn() {
+    // const [user, setUser] = useState({
+    //   email:null,
+    //   password: null,
+    //   first_name: null,
+    //   last_name: null
+    // })
     const navigate = useNavigate();
     const initialFormData = Object.freeze({
         email: '',
@@ -31,7 +38,8 @@ export default function SignIn() {
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value.trim(),
-        })
+        });
+        // setUser({...user, [e.target.name]: e.target.value.trim()});
     }
 
     const handleSubmit = (e) => {
@@ -46,12 +54,24 @@ export default function SignIn() {
             .then((res) => {
               console.log(res);
               console.log(res.data);
-                localStorage.setItem('access_token', res.data.access);
-                localStorage.setItem('refresh_token', res.data.refresh);
-                axiosInstance.defaults.headers['Authorization'] = 
-                    'JWT' + localStorage.getItem('access_token');
-                navigate('/');
-            })
+  
+              // Vérifier les valeurs de access et refresh
+              if (res.data.access_token && res.data.refresh_token) {
+                  localStorage.setItem('access_token', res.data.access_token);
+                  localStorage.setItem('refresh_token', res.data.refresh_token);
+                  localStorage.setItem('email', jwtDecode(res.data.access_token).email);
+                  localStorage.setItem('first_name', jwtDecode(res.data.access_token).first_name);
+                  axiosInstance.defaults.headers['Authorization'] = 'JWT ' + localStorage.getItem('access_token');
+                  navigate('/');
+              } else {
+                  console.error('Les valeurs access et refresh sont manquantes.');
+                  // Gérer l'erreur ici et afficher un message d'erreur approprié
+              }
+          })
+          .catch((error) => {
+              console.error(error);
+              // Gérer l'erreur ici et afficher un message d'erreur approprié
+          });
     }
 
   return (
@@ -104,7 +124,6 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit}
             >
               Se connecter
             </Button>

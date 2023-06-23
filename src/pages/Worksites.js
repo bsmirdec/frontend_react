@@ -4,6 +4,7 @@ import Worksite from '../Components/Worksite';
 import WorksiteLoadingComponent from '../Components/WorksiteLoading';
 import WorksitesDrawer from '../Components/WorksitesDrawer';
 
+
 function Worksites() {
   const WorksiteLoading = WorksiteLoadingComponent(WorksitesDrawer);
   const [worksiteState, setWorksiteState] = useState({

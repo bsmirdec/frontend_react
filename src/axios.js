@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt_decode from 'jwt-decode';
 
 const baseURL = 'http://127.0.0.1:8000/api/';
 
@@ -51,7 +52,7 @@ axiosInstance.interceptors.response.use(
             const refreshToken = localStorage.getItem('refresh_token');
 
             if (refreshToken) {
-                const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
+                const tokenParts = jwt_decode(refreshToken);
                 const now = Math.ceil(Date.now() / 1000);
                 console.log(tokenParts.exp);
 

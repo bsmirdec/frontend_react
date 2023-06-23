@@ -14,8 +14,8 @@ const drawerWidth = 240;
 
 const WorksitesDrawer = (props) => {
   const { worksites } = props;
-
   console.log(worksites)
+
   function displayWorksite(worksite_id) {
     const worksitesFilteredActive= worksites.find(
       (worksite) => worksite.worksite_id === worksite_id
