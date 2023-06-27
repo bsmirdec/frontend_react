@@ -40,7 +40,7 @@ export default function Register() {
         console.log(formData);
 
         axiosInstance
-            .post('user/create/', {
+            .post('users/', {
                 email: formData.email,
                 first_name: formData.first_name,
                 last_name: formData.last_name,

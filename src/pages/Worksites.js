@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axiosInstance from '../axios';
-import Worksite from '../Components/Worksite';
+import Worksite from '../Components/worksite/Worksite';
 import WorksiteLoadingComponent from '../Components/WorksiteLoading';
 import WorksitesDrawer from '../Components/WorksitesDrawer';
 
@@ -17,7 +17,7 @@ function Worksites() {
     setWorksiteState({ loading: true });
 
     axiosInstance
-      .get('/worksite/')
+      .get('/worksites/')
       .then(response => {
         const worksites = response.data;
         console.log(worksites)

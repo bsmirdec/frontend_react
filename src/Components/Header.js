@@ -169,7 +169,7 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <p>{localStorage.getItem('first_name')} - user</p>
+              <p style={{ textAlign: 'center' }}>{localStorage.getItem('first_name')} - {localStorage.getItem('last_name')}</p>
               <MenuItem key="account" onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Mon compte</Typography>
               </MenuItem>

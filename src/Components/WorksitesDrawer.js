@@ -12,6 +12,8 @@ import { Divider } from '@mui/material';
 
 const drawerWidth = 240;
 
+// const userId = localStorage.getItem('user_id');
+
 const WorksitesDrawer = (props) => {
   const { worksites } = props;
   console.log(worksites)
@@ -28,56 +30,43 @@ const WorksitesDrawer = (props) => {
     }
   }
 
-    if (!worksites || worksites.length === 0) 
-      return <p>Pas de chantier chargé</p>
-      // return (
-      //   <Box sx={{ display: 'flex' }}>
-      //     <CssBaseline />
-      //     <Drawer
-      //       variant="permanent"
-      //       sx={{
-      //         width: drawerWidth,
-      //         flexShrink: 0,
-      //         [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position:'inherit'},
-      //       }}
-      //     >
-      //       <Box sx={{ overflow: 'auto' }}>
-      //         <ListItemButton>
-      //           Créer Nouveau Chantier
-      //         </ListItemButton>
-      //       </Box>
-      //     </Drawer> 
-      //   </Box>
-      // )
+  const canCreateWorksite =
+    localStorage.getItem('user_permissions').includes('IsAdministrator') ||
+    localStorage.getItem('user_permissions').includes('IsAdmin');
+
+  if (!worksites || worksites.length === 0) 
+    return <p>Pas de chantier chargé</p>
     
-    return (
-        <Box sx={{ display: 'flex' }}>
-          <CssBaseline />
-          <Drawer
-            variant="permanent"
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position:'inherit'},
-            }}
-          >
-            <Box sx={{ overflow: 'auto' }}>
-              <ListItemButton>
-                Créer Nouveau Chantier
-              </ListItemButton>
-              <Divider />
-              <List>
-                {worksites.map((worksite) => (
-                  <ListItem key={worksite.name} disablePadding>
-                    <ListItemButton onClick={() => displayWorksite(worksite.worksite_id)}>
-                      <ListItemText primary={worksite.name} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Box>
-          </Drawer>
+  return (
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position:'inherit'},
+        }}
+      >
+        <Box sx={{ overflow: 'auto' }}>
+          {canCreateWorksite && (
+            <ListItemButton>
+              Créer Nouveau Chantier
+            </ListItemButton>
+          )}
+          <Divider />
+          <List>
+            {worksites.map((worksite) => (
+              <ListItem key={worksite.name} disablePadding>
+                <ListItemButton onClick={() => displayWorksite(worksite.worksite_id)}>
+                  <ListItemText primary={worksite.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
         </Box>
+      </Drawer>
+    </Box>
     )
 }
 
