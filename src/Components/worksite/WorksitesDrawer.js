@@ -1,4 +1,6 @@
 import React from 'react';
+import { isUserAdmin } from '../../utils/userUtils';
+// Material UI
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -6,16 +8,23 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+// import AddIcon from '@mui/icons-material/Add';
 import { Divider } from '@mui/material';
-
+import { useTheme, makeStyles } from '@mui/styles';
 
 
 const drawerWidth = 240;
 
-// const userId = localStorage.getItem('user_id');
+const useStyles = makeStyles((theme) => ({
+  addIcon: {
+    color: theme.palette.primary.main, // Utilisez la couleur principale du thème
+  },
+}));
 
 const WorksitesDrawer = (props) => {
-  const { worksites } = props;
+  const worksites = props.worksites;
+  const onCreateNewWorksite = props.onCreateNewWorksite
+  const classes = useStyles();
   console.log(worksites)
 
   function displayWorksite(worksite_id) {
@@ -29,10 +38,6 @@ const WorksitesDrawer = (props) => {
       props.setActiveWorksite('')
     }
   }
-
-  const canCreateWorksite =
-    localStorage.getItem('user_permissions').includes('IsAdministrator') ||
-    localStorage.getItem('user_permissions').includes('IsAdmin');
 
   if (!worksites || worksites.length === 0) 
     return <p>Pas de chantier chargé</p>
@@ -48,9 +53,9 @@ const WorksitesDrawer = (props) => {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', position:'inherit'},
         }}
       >
-        <Box sx={{ overflow: 'auto' }}>
-          {canCreateWorksite && (
-            <ListItemButton>
+        <Box sx={{ overflow: 'auto'}}>
+          {isUserAdmin && (
+            <ListItemButton onClick={onCreateNewWorksite}>
               Créer Nouveau Chantier
             </ListItemButton>
           )}

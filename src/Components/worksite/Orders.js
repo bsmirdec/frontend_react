@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,14 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 
 // Generate Order Data
-function createData(
-  id: number,
-  date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number,
-) {
+function createData(id, date, name, shipTo, paymentMethod, amount) {
   return { id, date, name, shipTo, paymentMethod, amount };
 }
 
@@ -26,7 +19,7 @@ const rows = [
     'Elvis Presley',
     'Tupelo, MS',
     'VISA ⠀•••• 3719',
-    312.44,
+    312.44
   ),
   createData(
     1,
@@ -34,7 +27,7 @@ const rows = [
     'Paul McCartney',
     'London, UK',
     'VISA ⠀•••• 2574',
-    866.99,
+    866.99
   ),
   createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
   createData(
@@ -43,7 +36,7 @@ const rows = [
     'Michael Jackson',
     'Gary, IN',
     'AMEX ⠀•••• 2000',
-    654.39,
+    654.39
   ),
   createData(
     4,
@@ -51,11 +44,11 @@ const rows = [
     'Bruce Springsteen',
     'Long Branch, NJ',
     'VISA ⠀•••• 5919',
-    212.79,
+    212.79
   ),
 ];
 
-function preventDefault(event: React.MouseEvent) {
+function preventDefault(event) {
   event.preventDefault();
 }
 

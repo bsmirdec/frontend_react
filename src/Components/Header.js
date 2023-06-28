@@ -1,5 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useActionData, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { isUserAdmin } from '../utils/userUtils';
 // Material UI
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,14 +16,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from "../assets/cobat-logo.png"
-import { Link } from 'react-router-dom';
+import { useTheme } from '@emotion/react';
 
-const pages = [{adress: 'worksite',name :'Chantier'}, {adress:'command', name:'Commande'}, {adress:'contacts', name:'Contacts'}];
+
+
+const pages = [{adress: 'worksite',name :'Chantier'}, {adress:'command', name:'Commande'}, {adress:'admin', name:'Administration'}];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+  const theme= useTheme();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -43,9 +48,23 @@ function ResponsiveAppBar() {
     handleCloseUserMenu();
     navigate("/logout")}
 
+  const UserAvatar = ({ firstName, lastName }) => {
+    const getInitials = () => {
+      const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+      return initials.toUpperCase();
+    };
+    return (
+      <Avatar>
+        {getInitials()}
+      </Avatar>
+    );
+  };
+  
+  
+
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="static" style={{backgroundColor: theme.palette.primary.light}}>
+      <Container maxWidth="xl" >
         <Toolbar disableGutters>
           <Box component="img" src={logo} alt="Cobat-Constructions" title="Cobat-Constructions"  sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 ,height:"50px"}}/>
           <Typography
@@ -97,6 +116,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
+                (page.adress === 'admin' && (!localStorage.getItem('user_permissions') || !isUserAdmin())) ? null : (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">
                         <Link style={{textDecoration: "none", color: "black"}} to={`/${page.adress}`}>
@@ -104,6 +124,7 @@ function ResponsiveAppBar() {
                         </Link>
                     </Typography>
                 </MenuItem>
+                )
               ))}
             </Menu>
           </Box>
@@ -128,29 +149,27 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Link style={{textDecoration: "none", color: "white"}} to={`/${page.adress}`}>
-                    {page.name}
-                </Link>
-              </Button>
+              (page.adress === 'admin' && (!localStorage.getItem('user_permissions') || !isUserAdmin())) ? null : (
+                <Button
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  <Link style={{textDecoration: "none", color: "white"}} to={`/${page.adress}`}>
+                      {page.name}
+                  </Link>
+                </Button>
+              )
             ))}
           </Box>
-          <nav>
-              <Link to="/create">
-                Register
-              </Link>
-              <Link to="/login">
-                Se connecter
-              </Link>
-          </nav>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {localStorage.getItem('first_name') ? (
+                  <UserAvatar firstName={localStorage.getItem('first_name')} lastName={localStorage.getItem('last_name')}  />
+                ) : (
+                  <UserAvatar firstName="?" lastName="" />
+                  )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -169,7 +188,7 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <p style={{ textAlign: 'center' }}>{localStorage.getItem('first_name')} - {localStorage.getItem('last_name')}</p>
+              <p style={{ textAlign: 'center', color: 'primary'}}>{localStorage.getItem('first_name')} {localStorage.getItem('last_name')}</p>
               <MenuItem key="account" onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">Mon compte</Typography>
               </MenuItem>

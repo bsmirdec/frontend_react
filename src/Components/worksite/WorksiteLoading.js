@@ -6,7 +6,7 @@ function WorksiteLoading(Component) {
     return function WorksiteLoadingComponent({ isLoading, ...props }) {
         if (!isLoading) return <Component {...props} />;
         return (
-            <Box sx={{ display: 'flex' }}>
+            <Box sx={{ display: 'flex', margin: 'auto'}}>
                 <CircularProgress />
             </Box>
         )
