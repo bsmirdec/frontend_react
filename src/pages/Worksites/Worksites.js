@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../axios';
-import Worksite from '../Components/worksite/Worksite';
-import WorksiteLoadingComponent from '../Components/worksite/WorksiteLoading';
-import WorksitesDrawer from '../Components/worksite/WorksitesDrawer';
-import NewWorksite from '../Components/worksite/NewWorksite';
+import axiosInstance from '../../axios';
+import Worksite from '../../Components/worksite/Worksite';
+import WorksiteLoadingComponent from '../../Components/worksite/WorksiteLoading';
+import WorksitesDrawer from '../../Components/worksite/WorksitesDrawer';
+import NewWorksite from '../../Components/worksite/NewWorksite';
 
 function Worksites() {
   const WorksiteLoading = WorksiteLoadingComponent(WorksitesDrawer);
@@ -40,9 +40,10 @@ function Worksites() {
       {worksiteState.loading ? (
         <WorksiteLoading isLoading={worksiteState.loading} />
       ) : (
-        <>
+        <React.Fragment>
           {worksiteState.worksites && worksiteState.worksites.length > 1 && (
             <WorksitesDrawer
+              style={{ height: '100%'}}
               onCreateNewWorksite={toggleDisplayNewWorksite}
               worksites={worksiteState.worksites}
               setActiveWorksite={setActiveWorksite}
@@ -51,15 +52,15 @@ function Worksites() {
           {displayNewWorksite ? (
             <NewWorksite onCancel={toggleDisplayNewWorksite} />
           ) : (
-            <>
+            <React.Fragment>
               {activeWorksite ? (
                 <Worksite worksite={activeWorksite} />
               ) : (
                 <p style={{ margin: 'auto', fontSize: '2em' }}>Sélectionnez un chantier</p>
               )}
-            </>
+            </React.Fragment>
           )}
-        </>
+        </React.Fragment>
       )}
     </div>
   );

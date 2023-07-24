@@ -1,75 +1,61 @@
-<<<<<<< HEAD
-# Getting Started with Create React App
+# CobApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Définissons ici l'architecture et les principales fonctionnalités attendues pour l'interface Web de l'application CobApp
 
-## Available Scripts
+---
+## Pages principales
+---
+L'application comportera un certains nombre de pages principales, correspondant aux fonctionnalités majeures :
+- **Home** : page ou on trouvera les dernières infos de l'entreprise, le mot du patron, les diffusions QSE
 
-In the project directory, you can run:
+- **Bannière** : la bannière devra contenir les liens vers les diverses pages, et être affichée systématiquement. Elle contiendra aussi un menu utilisateur et une icone de notifications.
 
-### `yarn start`
+- **Chantier** : page à destination de l'encadrement de chantier principalement, où l'on pourra visualiser et gérer les infos du chantier, le stock du chantier, le personnel, ...
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Commande** : page à destination des chef de chantier et conduc Tvx, pour commander du matériel. Son architecture sera semblable à un site de commande en ligne, avec un catalogue, un système de filtrage, un panier, et une validation de panier (commande). Cette page doit inclure un système de validation.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Administration** : équivalent de l'administration de l'API mais disponible sur l'application web
 
-### `yarn test`
+- **Statistiques** : pages à destination des patrons et salariés du siège, comprenant graphiques dynamiques et statistiques sur l'ensemble des chantiers
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Pied de page** : permettant d'accéder aux contacts et de faire des commentaires, ou de signaler des bugs
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
+## Version Mobile
+---
+La version mobile de l'application sera une version simplifiée, voire très simplifiée de l'application, sur laquelle nous garderons uniquement les interfaces de commande, réception et affichage du matériel du chantier.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
+## Chantier
+---
+La page chantier est articulée comme un dashboard de gestion de projet.
+On choisit d'abord le chantier que l'on veut afficher sur le menu de gauche, puis on est dirigé vers l'affichage des informations du chantier. 
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Stock
+---
+Le stock du chantier devra être affiché ici, trié par type de matériel (coffrage, machines, outillage, équipement de sécurité, consommables, ...)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+On pourra voir les arrivées et sorties de matériel au fûr et à mesure des commandes, ainsi que voir les prochains arrivages programmés
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Il y aura un lien vers la page de commande pour faire une nouvelle demande.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+A voir si utile, nous pourrions également afficher un bouton qui permettrait d'ajouter les éléments du stock chantier à une liste et de faire une demande de retour.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Bennes
+---
+La gestion des bennes devra apparaître ici, avec la possibilité de demander un retrait ou un dépôt.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### Personnel
+---
+A venir, pointage du personnel
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### QSE
+---
+A venir, interface QSE pour réaliser les 1/4h et visites sécurité
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-=======
-# CobApp_Front
-Frontend React pour l'application CobApp
->>>>>>> origin/main

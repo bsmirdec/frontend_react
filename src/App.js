@@ -39,7 +39,7 @@ const theme = createTheme({
       main: '#14638a'
     },
     background: {
-      dafault: '#f2f2f2',
+      default: '#f2f2f2',
     }
   },
   typography: {

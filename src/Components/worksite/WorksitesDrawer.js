@@ -17,7 +17,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   addIcon: {
-    color: theme.palette.primary.main, // Utilisez la couleur principale du thème
+    color: theme.palette.primary.main
   },
 }));
 
@@ -43,7 +43,7 @@ const WorksitesDrawer = (props) => {
     return <p>Pas de chantier chargé</p>
     
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <CssBaseline />
       <Drawer
         variant="permanent"
@@ -64,7 +64,7 @@ const WorksitesDrawer = (props) => {
             {worksites.map((worksite) => (
               <ListItem key={worksite.name} disablePadding>
                 <ListItemButton onClick={() => displayWorksite(worksite.worksite_id)}>
-                  <ListItemText primary={worksite.name} />
+                  <ListItemText primary={worksite.city + " - " + worksite.name} />
                 </ListItemButton>
               </ListItem>
             ))}
