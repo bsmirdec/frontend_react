@@ -1,4 +1,4 @@
-import backgroundImage from '../assets/photo-1.jpg'
+import backgroundImage from '../../assets/photo-1.jpg'
 import { useTheme } from '@emotion/react';
 
 export default function Home() {

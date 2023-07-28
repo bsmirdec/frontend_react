@@ -1,5 +1,5 @@
 import React from 'react';
-import { isUserAdmin } from '../../utils/userUtils';
+// import { isUserAdmin } from '../../utils/userUtils';
 // Material UI
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';

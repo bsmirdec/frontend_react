@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../../axios';
-import Worksite from '../../Components/worksite/Worksite';
-import WorksiteLoadingComponent from '../../Components/worksite/WorksiteLoading';
-import WorksitesDrawer from '../../Components/worksite/WorksitesDrawer';
-import NewWorksite from '../../Components/worksite/NewWorksite';
+import Worksite from '../../components/worksite/Worksite';
+import WorksiteLoadingComponent from '../../components/worksite/WorksiteLoading';
+import WorksitesDrawer from '../../components/worksite/WorksitesDrawer';
+import NewWorksite from '../../components/worksite/NewWorksite';
 
 function Worksites() {
   const WorksiteLoading = WorksiteLoadingComponent(WorksitesDrawer);

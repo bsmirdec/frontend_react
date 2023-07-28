@@ -3,9 +3,9 @@ import axiosInstance from '../../axios';
 import { useNavigate} from 'react-router-dom';
 // Material UI
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import SubmitButton from '../../components/forms/SubmitButton';
+import FormTextField from '../../components/forms/FormTextfield';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -74,21 +74,16 @@ export default function Register() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
+                <FormTextField
+                  autoComplete="first-name"
                   name="first_name"
-                  required
-                  fullWidth
                   id="first_name"
                   label="Prénom"
-                  autoFocus
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
+                <FormTextField
                   id="last_name"
                   label="Nom"
                   name="last_name"
@@ -97,9 +92,7 @@ export default function Register() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                <FormTextField
                   id="email"
                   label="Adresse Email"
                   name="email"
@@ -108,9 +101,7 @@ export default function Register() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                <FormTextField
                   name="password"
                   label="Mot de passe"
                   type="password"
@@ -120,15 +111,11 @@ export default function Register() {
                 />
               </Grid>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <SubmitButton
               onClick={handleSubmit}
             >
               Créer un compte
-            </Button>
+            </SubmitButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">

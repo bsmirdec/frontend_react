@@ -12,16 +12,17 @@ import WebFont from 'webfontloader';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // pages
-import Home from './pages/Home'
-import Worksites from './pages/Worksites'
-import Command from './pages/Command'
+import Home from './pages/Home/Home'
+import Worksites from './pages/Worksites/Worksites'
+import Command from './pages/Command/Command'
 import Admin from './pages/Administration'
-import Register from './pages/users/Register'
-import Login from './pages/users/Login'
-import Logout from './pages/users/Logout'
+import Register from './pages/Register';
+import Confirmation from './pages/Confirmation'
+import Login from './pages/Login'
+import Logout from './pages/Users/Logout'
 
 // layouts
-import RootLayout from './layouts/RootLayout'
+import RootLayout from './components/layout/RootLayout'
 
 const theme = createTheme({
   palette: {
@@ -51,7 +52,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
-      <Route path="create/" element={<Register />} />
+      <Route path="create/" element={<Register/>} />
+      <Route path="confirm/" element={<Confirmation/>} />
       <Route path="login/" element={<Login />} />
       <Route path="logout/" element={<Logout />} />
       <Route path="worksite/" element={<Worksites />} />

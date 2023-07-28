@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActionData, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { isUserAdmin } from '../utils/userUtils';
+// import { isUserAdmin } from '../utils/userUtils';
 // Material UI
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import logo from "../assets/cobat-logo.png"
+import logo from "../../assets/cobat-logo.png"
 import { useTheme } from '@emotion/react';
 
 
