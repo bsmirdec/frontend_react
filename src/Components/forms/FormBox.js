@@ -1,18 +1,17 @@
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
-
-export default function FormBox ({children, ...props}) {
+export default function FormBox({ children, ...props }) {
     return (
         <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-          {...props}
+            sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+            {...props}
         >
-          {children}
+            {children}
         </Box>
-    )
+    );
 }

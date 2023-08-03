@@ -1,7 +1,6 @@
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
-
-export default function SubmitButton ({onClick, ...props}) {
+export default function SubmitButton({ onClick, ...props }) {
     return (
         <Button
             type="submit"
@@ -11,5 +10,5 @@ export default function SubmitButton ({onClick, ...props}) {
             onClick={onClick}
             {...props}
         ></Button>
-    )
+    );
 }

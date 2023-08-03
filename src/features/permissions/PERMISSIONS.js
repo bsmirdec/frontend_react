@@ -1,0 +1,17 @@
+export const PERMISSIONS = {
+    employee_create_object: "employee_create_object",
+    employee_view_list: "employee_view_list",
+    employee_retrieve_object: "employee_retrieve_object",
+    employee_update_object: "employee_update_object",
+    employee_delete_object: "employee_delete_object",
+    worksite_create_object: "worksite_create_object",
+    worksite_view_list: "worksite_view_list",
+    worksite_retrieve_object: "worksite_retrieve_object",
+    worksite_update_object: "worksite_update_object",
+    worksite_delete_object: "worksite_delete_object",
+    command_create_object: "command_create_object",
+    command_view_list: "command_view_list",
+    command_retrieve_object: "command_retrieve_object",
+    command_update_object: "command_update_object",
+    command_delete_object: "command_delete_object",
+};

@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
 
-export default function FormTextField({label, id, ...props}) {
-    const [value, setValue] = useState('');
+export default function FormTextField({ label, id, ...props }) {
+    const [value, setValue] = useState("");
     const [isFocused, setIsFocused] = useState(false);
-  
+
     const handleChange = (e) => {
-      const inputValue = e.target.value;
-      setValue(inputValue);
+        const inputValue = e.target.value;
+        setValue(inputValue);
     };
-  
+
     const handleFocus = () => {
-      setIsFocused(true);
+        setIsFocused(true);
     };
-  
+
     const handleBlur = () => {
-      setIsFocused(false);
+        setIsFocused(false);
     };
 
     return (
@@ -34,5 +34,5 @@ export default function FormTextField({label, id, ...props}) {
                 {...props}
             ></TextField>
         </div>
-    )
+    );
 }
