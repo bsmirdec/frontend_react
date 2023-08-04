@@ -54,15 +54,15 @@ export default function Login() {
         setErrorMessage("");
     }, [email, password]);
 
-    const getPermissions = async (user_id) => {
+    const getEmployee = async (user_id) => {
         try {
             const response = await axiosInstance.get(
-                `users/${user_id}/permissions`,
+                `users/${user_id}/employee`,
             );
             return response.data;
         } catch (error) {
             console.error(
-                "Erreur lors de la récupération des permissions :",
+                "Erreur lors de la récupération des informations salarié :",
                 error,
             );
             return {};
@@ -83,7 +83,15 @@ export default function Login() {
                 const refreshToken = response.data.refresh_token;
                 const userId = jwtDecode(response.data.access_token).user_id;
 
-                const permissions = await getPermissions(userId);
+                axiosInstance.defaults.headers["Authorization"] =
+                    "JWT " + accessToken;
+
+                const employee = await getEmployee(userId);
+                const firstName = employee.first_name;
+                const lastName = employee.last_name;
+                const position = employee.position;
+                const manager = employee.manager;
+                const permissions = JSON.parse(employee.permissions);
 
                 setAuth({
                     ...auth,
@@ -92,13 +100,12 @@ export default function Login() {
                     userId,
                     accessToken,
                     refreshToken,
-                    permissions: permissions,
+                    firstName,
+                    lastName,
+                    position,
+                    manager,
+                    permissions,
                 });
-
-                axiosInstance.defaults.headers["Authorization"] =
-                    "JWT " + accessToken;
-
-                console.log(auth);
 
                 navigate(from, { replace: true });
 

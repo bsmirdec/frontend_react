@@ -1,15 +1,10 @@
-import React, { useEffect } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-
-import { PERMISSIONS } from "../../permissions/PERMISSIONS";
 
 const RequireAuth = ({ children, allowedPermissions }) => {
     const { auth } = useAuth();
-    const navigate = useNavigate();
     const location = useLocation();
-
-    console.log(auth);
 
     // Vérifier si l'utilisateur est authentifié
     if (!auth || !auth.accessToken) {
