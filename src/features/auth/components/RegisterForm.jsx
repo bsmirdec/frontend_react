@@ -8,7 +8,7 @@ import isNameValid from "../../../utils/validation/name";
 import SubmitButton from "../../../components/forms/SubmitButton";
 import ValidationTextField from "../../../components/forms/ValidationTextField";
 import FormBox from "../../../components/forms/FormBox";
-import ErrorMessage from "../../../components/forms/ErrorMessage";
+import ErrorMessage from "../../../components/layout/ErrorMessage";
 // Material UI
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";

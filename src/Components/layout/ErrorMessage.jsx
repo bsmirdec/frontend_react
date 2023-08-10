@@ -17,14 +17,17 @@ const useStyles = makeStyles((theme) => ({
 const ErrorMessage = React.forwardRef(({ message }, ref) => {
     const classes = useStyles();
 
+    if (
+        !message ||
+        (typeof message === "object" && Object.keys(message).length === 0)
+    ) {
+        return null;
+    }
+
     return (
-        <div>
-            {message && (
-                <Typography variant="body1" className={classes.root} ref={ref}>
-                    {message}
-                </Typography>
-            )}
-        </div>
+        <Typography variant="body1" className={classes.root} ref={ref}>
+            {message}
+        </Typography>
     );
 });
 

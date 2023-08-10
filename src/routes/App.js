@@ -16,8 +16,9 @@ import AuthContainer from "../features/auth/containers/AuthContainer";
 
 // pages
 import Home from "../pages/Home/Home";
-import Worksites from "../pages/Worksites/Worksites";
+import WorksitesContainer from "../features/worksite/container/WorksitesContainer";
 import Command from "../pages/Command/Command";
+import StaffDisplay from "../features/employees/components/StaffDisplay";
 
 // routes
 import RootLayout from "./RootLayout";
@@ -66,7 +67,7 @@ const router = createBrowserRouter(
                             PERMISSIONS.worksite_retrieve_object,
                         ]}
                     >
-                        <Worksites />
+                        <WorksitesContainer />
                     </RequireAuth>
                 }
             />
@@ -80,6 +81,18 @@ const router = createBrowserRouter(
                         ]}
                     >
                         <Command />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="employee/"
+                element={
+                    <RequireAuth
+                        allowedPermissions={[
+                            PERMISSIONS.employee_update_object,
+                        ]}
+                    >
+                        <StaffDisplay />
                     </RequireAuth>
                 }
             />

@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import SubmitButton from "../../../components/forms/SubmitButton";
 import FormTextField from "../../../components/forms/FormTextfield";
 import FormBox from "../../../components/forms/FormBox";
-import ErrorMessage from "../../../components/forms/ErrorMessage";
+import ErrorMessage from "../../../components/layout/ErrorMessage";
 // Material UI
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -61,10 +61,18 @@ export default function Login() {
             );
             return response.data;
         } catch (error) {
-            console.error(
-                "Erreur lors de la récupération des informations salarié :",
-                error,
-            );
+            console.error(error);
+            if (
+                error.response &&
+                error.response.data &&
+                error.response.data.error
+            ) {
+                setErrorMessage(error.response.data.error);
+            } else {
+                setErrorMessage(
+                    "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
+                );
+            }
             return {};
         }
     };
@@ -82,6 +90,14 @@ export default function Login() {
                 const accessToken = response.data.access_token;
                 const refreshToken = response.data.refresh_token;
                 const userId = jwtDecode(response.data.access_token).user_id;
+                localStorage.setItem(
+                    "access_token",
+                    response.data.access_token,
+                );
+                localStorage.setItem(
+                    "refresh_token",
+                    response.data.refresh_token,
+                );
 
                 axiosInstance.defaults.headers["Authorization"] =
                     "JWT " + accessToken;
@@ -91,7 +107,7 @@ export default function Login() {
                 const lastName = employee.last_name;
                 const position = employee.position;
                 const manager = employee.manager;
-                const permissions = JSON.parse(employee.permissions);
+                const permissions = employee.permissions;
 
                 setAuth({
                     ...auth,

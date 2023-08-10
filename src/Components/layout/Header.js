@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -17,17 +17,31 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../../assets/cobat-logo.png";
 import { useTheme } from "@emotion/react";
+import useAuth from "../../features/auth/hooks/useAuth";
 
 const pages = [
     { adress: "worksite", name: "Chantier" },
     { adress: "command", name: "Commande" },
+    { adress: "employee", name: "Management" },
 ];
 
-function ResponsiveAppBar() {
+function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [pageList, setPageList] = useState(pages);
     const navigate = useNavigate();
+    const { auth } = useAuth();
     const theme = useTheme();
+
+    useEffect(() => {
+        if (auth.permissions) {
+            const allowedPages = pages.filter((page) => {
+                const requiredPermission = `${page.adress}_view_list`;
+                return auth.permissions[requiredPermission];
+            });
+            setPageList(allowedPages);
+        }
+    }, [auth]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -128,7 +142,7 @@ function ResponsiveAppBar() {
                                 display: { xs: "block", md: "none" },
                             }}
                         >
-                            {pages.map((page) => (
+                            {pageList.map((page) => (
                                 <MenuItem
                                     key={page.name}
                                     onClick={handleCloseNavMenu}
@@ -183,7 +197,7 @@ function ResponsiveAppBar() {
                             display: { xs: "none", md: "flex" },
                         }}
                     >
-                        {pages.map((page) => (
+                        {pageList.map((page) => (
                             <Button
                                 key={page.name}
                                 onClick={handleCloseNavMenu}
@@ -270,4 +284,4 @@ function ResponsiveAppBar() {
         </AppBar>
     );
 }
-export default ResponsiveAppBar;
+export default Header;

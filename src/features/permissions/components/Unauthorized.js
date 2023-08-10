@@ -1,5 +1,5 @@
 import Button from "@mui/material/Button";
-import ErrorMessage from "../../../components/forms/ErrorMessage";
+import ErrorMessage from "../../../components/layout/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 export default function Unauthorized() {

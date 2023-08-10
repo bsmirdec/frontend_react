@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
     timeout: 5000,
     headers: {
         "Content-Type": "application/json",
-        Accept: "application/json", // Utilisez "Accept" au lieu de "accept"
+        accept: "application/json",
     },
 });
 
@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
             error.response.status === 401 &&
             originalRequest.url === baseURL + "token/refresh/"
         ) {
-            window.location.href = "/auth/login";
+            window.location.href = "/auth/login/";
             return Promise.reject(error);
         }
 
@@ -54,44 +54,38 @@ axiosInstance.interceptors.response.use(
             if (refreshToken) {
                 const tokenParts = jwt_decode(refreshToken);
                 const now = Math.ceil(Date.now() / 1000);
-                console.log(tokenParts.exp);
 
                 if (tokenParts.exp > now) {
-                    return axiosInstance
-                        .post("/token/refresh/", { refresh: refreshToken })
-                        .then((response) => {
-                            localStorage.setItem(
-                                "access_token",
-                                response.data.access,
-                            );
-                            localStorage.setItem(
-                                "refresh_token",
-                                response.data.refresh,
-                            );
+                    try {
+                        const response = await axiosInstance.post(
+                            "/token/refresh/",
+                            { refresh: refreshToken },
+                        );
+                        const access = response.data.access;
 
-                            axiosInstance.defaults.headers[
-                                "Authorization"
-                            ] = `JWT ${response.data.access}`;
-                            originalRequest.headers[
-                                "Authorization"
-                            ] = `JWT ${response.data.access}`;
+                        localStorage.setItem("access_token", access);
+                        axiosInstance.defaults.headers[
+                            "Authorization"
+                        ] = `JWT ${access}`;
+                        originalRequest.headers[
+                            "Authorization"
+                        ] = `JWT ${access}`;
 
-                            return axiosInstance(originalRequest);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                        return axiosInstance(originalRequest);
+                    } catch (err) {
+                        console.log(err);
+                    }
                 } else {
                     console.log(
                         "Refresh token is expired",
                         tokenParts.exp,
                         now,
                     );
-                    window.location.href = "/auth/login";
+                    window.location.href = "/auth/login/";
                 }
             } else {
                 console.log("Refresh token not available.");
-                window.location.href = "/auth/login";
+                window.location.href = "/auth/login/";
             }
         }
         return Promise.reject(error);

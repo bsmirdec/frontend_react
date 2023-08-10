@@ -37,12 +37,3 @@ const RequireAuth = ({ children, allowedPermissions }) => {
 };
 
 export default RequireAuth;
-
-// useEffect(() => {
-//     if (!auth?.userId) {
-//         localStorage.setItem("redirectAfterLogin", location.pathname);
-//         navigate("/auth/login", { replace: true });
-//     }
-// }, [auth, navigate, location.pathname]);
-
-// return auth?.userId ? children : <div>Authentification incorrecte</div>;
