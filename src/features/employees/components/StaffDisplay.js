@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../../services/api/axios";
+import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 import { Typography, Card, CardContent, Button, Modal } from "@mui/material";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import PermissionsDisplay from "./PermissionsDisplay";
@@ -7,6 +8,7 @@ import useAuth from "../../auth/hooks/useAuth";
 
 const StaffDisplay = () => {
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const [staff, setStaff] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +25,7 @@ const StaffDisplay = () => {
         console.log(auth);
         const fetchStaff = async () => {
             try {
-                const response = await axiosInstance.get(
+                const response = await axiosPrivate.get(
                     `users/${auth.userId}/staff`,
                 );
                 setStaff(response.data);

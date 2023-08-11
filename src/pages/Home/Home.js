@@ -1,5 +1,6 @@
 import backgroundImage from "../../assets/photo-1.jpg";
 import { useTheme } from "@emotion/react";
+import useRefreshToken from "../../features/auth/hooks/useRefreshToken";
 
 export default function Home() {
     const theme = useTheme();
@@ -12,9 +13,12 @@ export default function Home() {
         backgroundPosition: "center",
     };
 
+    const refresh = useRefreshToken();
+
     return (
         <div className="home" style={styles}>
             <h2>Welcome</h2>
+            <button onClick={() => refresh()}>Refresh</button>
             <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
                 dolor assumenda, itaque nesciunt alias voluptatum nobis
