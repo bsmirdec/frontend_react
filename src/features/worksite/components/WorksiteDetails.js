@@ -2,14 +2,18 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Tabs, Tab, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import api from "../services/api"; // Assurez-vous d'ajuster le chemin
+import WorksiteEmployees from "./WorksiteEmployees";
 import useWorksiteQuery from "../hooks/useWorksiteQuery";
 
 function WorksiteDetails({ worksite }) {
     const theme = useTheme();
     const [selectedTab, setSelectedTab] = useState(0);
 
-    const { data: worksiteData, error, isLoading } = useWorksiteQuery(worksite);
+    const {
+        data: worksiteData,
+        isError,
+        isLoading,
+    } = useWorksiteQuery(worksite);
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -23,8 +27,8 @@ function WorksiteDetails({ worksite }) {
         return <p>Loading...</p>;
     }
 
-    if (error) {
-        return <p>Error: {error.message}</p>;
+    if (isError) {
+        return <p>Error: {isError.message}</p>;
     }
 
     return (
@@ -67,6 +71,7 @@ function WorksiteDetails({ worksite }) {
                     </Toolbar>
                 </AppBar>
             </Box>
+            {selectedTab === 2 && <WorksiteEmployees />}
         </div>
     );
 }

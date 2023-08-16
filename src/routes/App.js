@@ -3,6 +3,7 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
+    Routes,
     RouterProvider,
 } from "react-router-dom";
 
@@ -15,14 +16,17 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AuthContainer from "../features/auth/containers/AuthContainer";
 
 // pages
-import Home from "../pages/Home/Home";
+import HomeContainer from "../features/home/container/HomeContainer";
 import WorksitesContainer from "../features/worksite/container/WorksitesContainer";
-import Command from "../pages/Command/Command";
-import StaffDisplay from "../features/employees/components/StaffDisplay";
+import NewWorksiteContainer from "../features/worksite/container/NewWorksiteContainer";
+import CommandContainer from "../features/command/containers/CommandContainer";
+import StaffContainer from "../features/employees/containers/StaffContainer";
 
 // routes
 import RootLayout from "./RootLayout";
 import RequireAuth from "../features/auth/components/RequireAuth";
+// import PersistLogin from "../features/auth/components/PersistLogin";
+import RequirePermission from "../features/permissions/components/RequirePermission";
 
 // permissions
 import { PERMISSIONS } from "../features/permissions/PERMISSIONS";
@@ -55,44 +59,76 @@ const theme = createTheme({
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<RootLayout />}>
-            <Route index element={<Home />} />
             <Route path="auth/*" element={<AuthContainer />} />
             <Route path="unauthorized/" element={<Unauthorized />} />
             <Route
-                path="worksite/"
+                index
                 element={
-                    <RequireAuth
-                        allowedPermissions={[
-                            PERMISSIONS.worksite_view_list,
-                            PERMISSIONS.worksite_retrieve_object,
-                        ]}
-                    >
-                        <WorksitesContainer />
+                    <RequireAuth>
+                        <HomeContainer />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="worksite/*"
+                element={
+                    <RequireAuth>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.worksite_view_list,
+                                            PERMISSIONS.worksite_retrieve_object,
+                                        ]}
+                                    >
+                                        <WorksitesContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                            <Route
+                                path="create/"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.worksite_create_object,
+                                        ]}
+                                    >
+                                        <NewWorksiteContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                        </Routes>
                     </RequireAuth>
                 }
             />
             <Route
                 path="command/"
                 element={
-                    <RequireAuth
-                        allowedPermissions={[
-                            PERMISSIONS.command_view_list,
-                            PERMISSIONS.command_retrieve_object,
-                        ]}
-                    >
-                        <Command />
+                    <RequireAuth>
+                        <RequirePermission
+                            allowedPermissions={[
+                                PERMISSIONS.command_view_list,
+                                PERMISSIONS.command_retrieve_object,
+                            ]}
+                        >
+                            <CommandContainer />
+                        </RequirePermission>
                     </RequireAuth>
                 }
             />
             <Route
                 path="employee/"
                 element={
-                    <RequireAuth
-                        allowedPermissions={[
-                            PERMISSIONS.employee_update_object,
-                        ]}
-                    >
-                        <StaffDisplay />
+                    <RequireAuth>
+                        <RequirePermission
+                            allowedPermissions={[
+                                PERMISSIONS.employee_update_object,
+                            ]}
+                        >
+                            <StaffContainer />
+                        </RequirePermission>
                     </RequireAuth>
                 }
             />

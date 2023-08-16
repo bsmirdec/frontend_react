@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import axiosInstance from "../../../services/api/axios";
 import {
     Box,
     Typography,
@@ -10,12 +9,14 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
+import useUpdatePermissionsMutation from "../hooks/useUpdatePermissionsMutation";
 
 const PermissionsDisplay = ({
     selectedEmployee,
     setSelectedEmployee,
     onClose,
 }) => {
+    const updatePermissions = useUpdatePermissionsMutation();
     const [permissionsState, setPermissionsState] = useState(
         selectedEmployee.permissions,
     );
@@ -27,37 +28,15 @@ const PermissionsDisplay = ({
         setErrorMessage("");
     }, [permissionsState]);
 
-    const UpdatePermissions = async (employee) => {
-        try {
-            const updatedEmployee = {
-                ...employee,
-                permissions: permissionsState,
-            };
-            console.log(updatedEmployee);
-            const response = await axiosInstance.put(
-                `employees/${employee.employee_id}/update`,
-                updatedEmployee,
-            );
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.error
-            ) {
-                setErrorMessage(error.response.data.error);
-            } else {
-                setErrorMessage(
-                    "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
-                );
-            }
-        }
-    };
-
     // Gestionnaire d'événements pour la mise à jour des permissions
     const handleUpdatePermissions = async () => {
-        const newEmployee = await UpdatePermissions(selectedEmployee);
+        const updatedEmployee = {
+            ...selectedEmployee,
+            permissions: permissionsState,
+        };
+        const newEmployee = await updatePermissions.mutateAsync(
+            updatedEmployee,
+        );
         setSelectedEmployee((prevEmployee) => ({
             ...prevEmployee,
             permissions: newEmployee.permissions,
@@ -87,7 +66,7 @@ const PermissionsDisplay = ({
                 <CloseIcon />
             </IconButton>
             <Typography variant="h6">
-                Autorisation de {selectedEmployee.first_name}{" "}
+                Autorisations de {selectedEmployee.first_name}{" "}
                 {selectedEmployee.last_name}
             </Typography>
             {Object.entries(permissionsState).map(([permission, value]) => (

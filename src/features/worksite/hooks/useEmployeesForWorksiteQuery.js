@@ -1,13 +1,13 @@
 import { useQuery } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
-const useWorksiteQuery = (worksiteId) => {
+const useEmployeesForWorksiteQuery = (worksiteId) => {
     const axiosPrivate = useAxiosPrivate();
 
-    const fetchWorksiteDetails = async (worksiteId) => {
+    const fetchWorksiteEmployees = async (worksiteId) => {
         try {
             const response = await axiosPrivate.get(
-                `/worksites/${worksiteId}/get`,
+                `/managements/get-employee-for-worksite/${worksiteId}/`,
             );
             return response.data;
         } catch (error) {
@@ -15,12 +15,12 @@ const useWorksiteQuery = (worksiteId) => {
         }
     };
     return useQuery(
-        ["worksite", worksiteId],
-        () => fetchWorksiteDetails(worksiteId),
+        ["employees-for-worksite", worksiteId],
+        () => fetchWorksiteEmployees(worksiteId),
         {
             // You can add additional options here
         },
     );
 };
 
-export default useWorksiteQuery;
+export default useEmployeesForWorksiteQuery;

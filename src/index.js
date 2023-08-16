@@ -5,7 +5,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./routes/App";
-import { AuthProvider } from "./features/auth/context/AuthProvider";
+import { AuthProvider } from "./features/auth/context/AuthContext";
+import { BusinessProvider } from "./features/permissions/context/BusinessContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 
@@ -16,7 +17,9 @@ root.render(
     <React.StrictMode>
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <App />
+                <BusinessProvider>
+                    <App />
+                </BusinessProvider>
             </AuthProvider>
         </QueryClientProvider>
     </React.StrictMode>,

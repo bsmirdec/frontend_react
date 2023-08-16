@@ -1,6 +1,6 @@
-import { useState } from "react";
-import React from "react";
-import RequireAuth from "../../auth/components/RequireAuth";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AllowedPermission from "../../permissions/components/AllowedPermission";
 import { PERMISSIONS } from "../../permissions/PERMISSIONS";
 import {
     Box,
@@ -15,11 +15,9 @@ import {
 
 const drawerWidth = 240;
 
-const WorksiteList = ({
-    worksites,
-    setActiveWorksite,
-    onCreateNewWorksite,
-}) => {
+const WorksiteList = ({ worksites, setActiveWorksite }) => {
+    const navigate = useNavigate();
+
     function handleWorksiteClick(worksiteId) {
         const selectedWorksite = worksites.find(
             (worksite) => worksite.worksite_id === worksiteId,
@@ -27,10 +25,8 @@ const WorksiteList = ({
         setActiveWorksite(selectedWorksite.worksite_id);
     }
 
-    const [displayCreateButton, setDisplayCreateButton] = useState(false);
-    function handleCreateWorksiteClick() {
-        onCreateNewWorksite();
-        setDisplayCreateButton(!displayCreateButton);
+    function handleCreateWorksite() {
+        navigate("./create/");
     }
 
     return (
@@ -49,18 +45,16 @@ const WorksiteList = ({
                 }}
             >
                 <Box sx={{ overflow: "auto" }}>
-                    <RequireAuth
+                    <AllowedPermission
                         allowedPermissions={[
                             PERMISSIONS.worksite_create_object,
                         ]}
                     >
-                        <ListItemButton onClick={handleCreateWorksiteClick}>
-                            {!displayCreateButton
-                                ? "Créer Nouveau Chantier"
-                                : "Retour"}
+                        <ListItemButton onClick={handleCreateWorksite}>
+                            Créer nouveau chantier
                         </ListItemButton>
-                    </RequireAuth>
-                    <Divider />
+                        <Divider />
+                    </AllowedPermission>
                     <List>
                         {worksites.map((worksite) => (
                             <ListItem key={worksite.name} disablePadding>

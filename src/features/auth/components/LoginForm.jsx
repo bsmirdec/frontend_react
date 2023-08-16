@@ -1,11 +1,12 @@
 import { useRef, useState, useEffect } from "react";
-import axiosInstance from "../../../services/api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import jwtDecode from "jwt-decode";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import { useBusiness } from "../../permissions/context/BusinessContext";
 
 import SubmitButton from "../../../components/forms/SubmitButton";
-import FormTextField from "../../../components/forms/FormTextfield";
+import FormTextField from "../../../components/forms/FormTextField";
 import FormBox from "../../../components/forms/FormBox";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 // Material UI
@@ -22,7 +23,9 @@ import { useTheme, ThemeProvider } from "@mui/material/styles";
 export default function Login() {
     const theme = useTheme();
 
-    const { auth, setAuth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
+    const { auth, login } = useAuth();
+    const { setBusinessData } = useBusiness();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -54,34 +57,66 @@ export default function Login() {
         setErrorMessage("");
     }, [email, password]);
 
-    const getEmployee = async (user_id) => {
-        try {
-            const response = await axiosInstance.get(
-                `users/${user_id}/employee`,
-            );
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.error
-            ) {
-                setErrorMessage(error.response.data.error);
-            } else {
-                setErrorMessage(
-                    "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
+    useEffect(() => {
+        const getEmployee = async (userId) => {
+            try {
+                const response = await axiosPrivate.get(
+                    `users/${userId}/employee`,
                 );
+                return response.data;
+            } catch (error) {
+                console.error(error);
+                if (
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error
+                ) {
+                    setErrorMessage(error.response.data.error);
+                } else {
+                    setErrorMessage(
+                        "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
+                    );
+                }
+                return {};
             }
-            return {};
-        }
-    };
+        };
+        if (auth.accessToken && auth.userId) {
+            const fetchEmployee = async (userId) => {
+                const employee = await getEmployee(userId);
+                const employeeId = employee.employee_id;
+                const firstName = employee.first_name;
+                const lastName = employee.last_name;
+                const position = employee.position;
+                const manager = employee.manager;
+                const permissions = employee.permissions;
 
+                setBusinessData({
+                    employeeId,
+                    firstName,
+                    lastName,
+                    position,
+                    manager,
+                    permissions,
+                });
+            };
+
+            fetchEmployee(auth.userId);
+
+            navigate(from, { replace: true });
+        }
+    }, [
+        auth.accessToken,
+        auth.userId,
+        setBusinessData,
+        from,
+        navigate,
+        axiosPrivate,
+    ]);
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await axiosInstance.post("token/obtain/", {
+            const response = await axiosPrivate.post("token/obtain/", {
                 email: email,
                 password: password,
             });
@@ -89,41 +124,9 @@ export default function Login() {
             if (response.data.access_token && response.data.refresh_token) {
                 const accessToken = response.data.access_token;
                 const refreshToken = response.data.refresh_token;
+                localStorage.setItem("refresh", response.data.refresh_token);
                 const userId = jwtDecode(response.data.access_token).user_id;
-                localStorage.setItem(
-                    "access_token",
-                    response.data.access_token,
-                );
-                localStorage.setItem(
-                    "refresh_token",
-                    response.data.refresh_token,
-                );
-
-                axiosInstance.defaults.headers["Authorization"] =
-                    "JWT " + accessToken;
-
-                const employee = await getEmployee(userId);
-                const firstName = employee.first_name;
-                const lastName = employee.last_name;
-                const position = employee.position;
-                const manager = employee.manager;
-                const permissions = employee.permissions;
-
-                setAuth({
-                    ...auth,
-                    email,
-                    password,
-                    userId,
-                    accessToken,
-                    refreshToken,
-                    firstName,
-                    lastName,
-                    position,
-                    manager,
-                    permissions,
-                });
-
-                navigate(from, { replace: true });
+                login(accessToken, refreshToken, userId);
 
                 // Stocker les valeurs des champs email et password si "Se souvenir de moi" est coché
                 if (rememberMe) {
@@ -141,7 +144,6 @@ export default function Login() {
                 }
             } else {
                 console.error("Les valeurs access et refresh sont manquantes.");
-                // Gérer l'erreur ici et afficher un message d'erreur approprié
             }
         } catch (error) {
             console.error(error);

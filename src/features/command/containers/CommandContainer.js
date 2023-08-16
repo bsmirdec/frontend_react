@@ -1,4 +1,4 @@
-export default function Command() {
+export default function CommandContainer() {
     return (
         <div className="command">
             <h2>Commande</h2>

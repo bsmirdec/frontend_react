@@ -1,12 +1,24 @@
 import { useMutation, useQueryClient } from "react-query";
-import api from "../services/api";
+import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
 const useDeleteWorksiteMutation = () => {
     const queryClient = useQueryClient();
+    const axiosPrivate = useAxiosPrivate();
+
+    const deleteWorksite = async (worksiteId) => {
+        try {
+            const response = await axiosPrivate.get(
+                `/worksites/${worksiteId}/delete`,
+            );
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    };
 
     return useMutation(
-        "updated-worksite",
-        (worksiteId) => api.deleteWorksite(worksiteId),
+        "deleted-worksite",
+        (worksiteId) => deleteWorksite(worksiteId),
         {
             onSuccess: () => {
                 // Invalidate and refetch the worksite list query

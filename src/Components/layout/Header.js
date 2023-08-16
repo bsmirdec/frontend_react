@@ -17,7 +17,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../../assets/cobat-logo.png";
 import { useTheme } from "@emotion/react";
-import useAuth from "../../features/auth/hooks/useAuth";
+import { useBusiness } from "../../features/permissions/context/BusinessContext";
 
 const pages = [
     { adress: "worksite", name: "Chantier" },
@@ -30,18 +30,18 @@ function Header() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [pageList, setPageList] = useState(pages);
     const navigate = useNavigate();
-    const { auth } = useAuth();
+    const { businessData } = useBusiness();
     const theme = useTheme();
 
     useEffect(() => {
-        if (auth.permissions) {
+        if (businessData.permissions) {
             const allowedPages = pages.filter((page) => {
                 const requiredPermission = `${page.adress}_view_list`;
-                return auth.permissions[requiredPermission];
+                return businessData.permissions[requiredPermission];
             });
             setPageList(allowedPages);
         }
-    }, [auth]);
+    }, [businessData]);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -225,14 +225,10 @@ function Header() {
                                 onClick={handleOpenUserMenu}
                                 sx={{ p: 0 }}
                             >
-                                {localStorage.getItem("first_name") ? (
+                                {businessData.firstName ? (
                                     <UserAvatar
-                                        firstName={localStorage.getItem(
-                                            "first_name",
-                                        )}
-                                        lastName={localStorage.getItem(
-                                            "last_name",
-                                        )}
+                                        firstName={businessData.firstName}
+                                        lastName={businessData.lastName}
                                     />
                                 ) : (
                                     <UserAvatar firstName="?" lastName="" />
@@ -261,8 +257,7 @@ function Header() {
                                     color: "primary",
                                 }}
                             >
-                                {localStorage.getItem("first_name")}{" "}
-                                {localStorage.getItem("last_name")}
+                                {businessData.firstName} {businessData.lastName}
                             </p>
                             <MenuItem
                                 key="account"

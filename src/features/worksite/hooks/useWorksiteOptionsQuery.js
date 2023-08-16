@@ -1,8 +1,19 @@
 import { useQuery } from "react-query";
-import api from "../services/api";
+import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
 const useWorksiteOptionsQuery = () => {
-    return useQuery("worksite-options", () => api.fetchWorksiteOptions(), {});
+    const axiosPrivate = useAxiosPrivate();
+
+    const fetchWorksiteOptions = async () => {
+        try {
+            const response = await axiosPrivate.get("worksites/options");
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    return useQuery("worksite-options", () => fetchWorksiteOptions(), {});
 };
 
 export default useWorksiteOptionsQuery;

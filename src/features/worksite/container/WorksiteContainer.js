@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { AppBar, Toolbar, Typography, Tabs, Tab, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import useWorksiteQuery from "../hooks/useWorksiteQuery";
+import WorksiteEmployees from "../components/WorksiteEmployees";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 
@@ -58,6 +59,7 @@ function WorksiteContainer({ activeWorksite }) {
                     </Tabs>
                 </Toolbar>
             </AppBar>
+            {selectedTab === 2 && <WorksiteEmployees worksite={worksiteData} />}
         </Box>
     );
 }

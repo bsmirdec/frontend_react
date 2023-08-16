@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
-const useUpdateWorksiteMutation = () => {
+const useUpdatePermissionsMutation = () => {
     const queryClient = useQueryClient();
     const axiosPrivate = useAxiosPrivate();
 
-    const updateWorksite = async (updatedWorksite) => {
+    const updatePermissions = async (updatedEmployee) => {
         try {
             const response = await axiosPrivate.put(
-                `/worksites/${updatedWorksite.worksite_id}/update`,
-                updatedWorksite,
+                `employees/${updatedEmployee.employee_id}/update`,
+                updatedEmployee,
             );
             return response.data;
         } catch (error) {
@@ -18,15 +18,14 @@ const useUpdateWorksiteMutation = () => {
     };
 
     return useMutation(
-        "updated-worksite",
-        (updatedWorksite) => updateWorksite(updatedWorksite),
+        "updated-permissions",
+        (updatedEmployee) => updatePermissions(updatedEmployee),
         {
             onSuccess: () => {
-                // Invalidate and refetch the worksite list query
-                queryClient.invalidateQueries("worksites");
+                queryClient.invalidateQueries("permissions");
             },
         },
     );
 };
 
-export default useUpdateWorksiteMutation;
+export default useUpdatePermissionsMutation;

@@ -1,42 +1,42 @@
 import { useMutation, useQueryClient } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
-class WorksiteAlreadyExists extends Error {
+class ManagementAlreadyExists extends Error {
     constructor(message) {
         super(message);
-        this.name = "WorksiteAlreadyExists";
+        this.name = "ManagementAlreadyExists";
     }
 }
 
-const useCreateWorksiteMutation = () => {
+const useCreateManagementMutation = () => {
     const queryClient = useQueryClient();
     const axiosPrivate = useAxiosPrivate();
 
-    const createWorksite = async (newWorksiteData) => {
+    const createManagement = async (newManagementData) => {
         try {
-            console.log(newWorksiteData);
+            console.log(newManagementData);
             const response = await axiosPrivate.post(
-                "/worksites/create",
-                newWorksiteData,
+                "/managements/create",
+                newManagementData,
             );
             return response.data;
         } catch (error) {
             if (error.response.status === 400) {
-                throw new WorksiteAlreadyExists(error.response.data.detail);
+                throw new ManagementAlreadyExists(error.response.data.detail);
             } else {
                 throw new Error(
-                    "Une erreur s'est produite lors de la création du chantier.",
+                    "Une erreur s'est produite lors de la création de l'affectation.",
                 );
             }
         }
     };
 
-    return useMutation(createWorksite, {
+    return useMutation(createManagement, {
         onSuccess: (data) => {
-            queryClient.invalidateQueries("worksites");
+            queryClient.invalidateQueries("worksites-for-employee");
             return data;
         },
     });
 };
 
-export default useCreateWorksiteMutation;
+export default useCreateManagementMutation;

@@ -2,12 +2,12 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import api from "../services/api";
 import useWorksiteOptionsQuery from "../hooks/useWorksiteOptionsQuery";
+import useCreateWorksiteMutation from "../hooks/useCreateWorksiteMutation";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import SubmitButton from "../../../components/forms/SubmitButton";
-import FormTextField from "../../../components/forms/FormTextfield";
+import FormTextField from "../../../components/forms/FormTextField";
 import FormBox from "../../../components/forms/FormBox";
 // Material UI
 import {
@@ -29,12 +29,13 @@ const validationSchema = Yup.object().shape({
     status: Yup.string().required("Le statut est requis"),
 });
 
-function CreateWorksiteForm() {
+function CreateWorksiteForm({ page, setPage, worksite, setWorksite }) {
     const {
         data: worksiteOptions,
         isLoading,
         isError,
     } = useWorksiteOptionsQuery();
+    const createWorksiteMutation = useCreateWorksiteMutation();
 
     const formik = useFormik({
         initialValues: {
@@ -50,12 +51,27 @@ function CreateWorksiteForm() {
         validationSchema,
         onSubmit: async (values) => {
             try {
-                if (formik.isValid) {
-                    const response = await api.createWorksite(values);
-                    console.log(response);
-                }
+                const response = await createWorksiteMutation.mutateAsync(
+                    values,
+                );
+                console.log("Chantier créé avec succès :", response);
+                setWorksite({
+                    worksiteId: response.worksite_id,
+                    name: response.name,
+                    city: response.city,
+                });
+                setPage(page + 1);
             } catch (error) {
-                // Handle error
+                console.error(
+                    "Erreur lors de la création du chantier :",
+                    error,
+                );
+                if (error.name === "WorksiteAlreadyExists") {
+                    formik.setErrors({
+                        name: error.message,
+                        city: error.message,
+                    });
+                }
             }
         },
     });
@@ -65,11 +81,11 @@ function CreateWorksiteForm() {
     }
 
     if (isError) {
-        return <ErrorMessage message={isError.message} />;
+        return <ErrorMessage message={isError.message.data.detail} />;
     }
 
     if (!worksiteOptions) {
-        return null; // Ou affichez un message d'erreur approprié
+        return <p>Erreur de chargement du formulaire</p>;
     }
 
     return (
