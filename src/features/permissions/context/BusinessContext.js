@@ -10,6 +10,7 @@ export const BusinessProvider = ({ children }) => {
         position: "",
         manager: "",
         permissions: null,
+        currentWorksite: null,
     });
 
     return (

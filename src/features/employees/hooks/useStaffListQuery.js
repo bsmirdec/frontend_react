@@ -7,7 +7,6 @@ const useStaffListQuery = (userId) => {
     const fetchStaffList = async () => {
         try {
             const response = await axiosPrivate.get(`users/${userId}/staff`);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             throw error;

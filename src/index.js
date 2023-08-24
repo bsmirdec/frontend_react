@@ -7,6 +7,7 @@ import "./index.css";
 import App from "./routes/App";
 import { AuthProvider } from "./features/auth/context/AuthContext";
 import { BusinessProvider } from "./features/permissions/context/BusinessContext";
+import { CartProvider } from "./features/request/context/CartContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query-devtools";
 
@@ -18,7 +19,9 @@ root.render(
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
                 <BusinessProvider>
-                    <App />
+                    <CartProvider>
+                        <App />
+                    </CartProvider>
                 </BusinessProvider>
             </AuthProvider>
         </QueryClientProvider>

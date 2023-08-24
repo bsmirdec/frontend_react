@@ -22,6 +22,7 @@ const useDeleteManagementMutation = () => {
     return useMutation(deleteManagement, {
         onSuccess: () => {
             queryClient.invalidateQueries("worksites-for-employee");
+            queryClient.invalidateQueries("employees-for-worksite");
         },
         mutationKey: "managements-delete",
     });

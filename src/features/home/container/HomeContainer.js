@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Typography, Grid, Paper } from "@mui/material";
-import CommandTable from "../../command/components/CommandTable";
-import NotificationsList from "../../notifications/components/NotificationsList";
+import CommandTable from "../../request/components/CommandTable";
+import NotificationsComponent from "../../notifications/components/NotificationsList";
 
 const Home = () => {
     return (
         <Container maxWidth="lg">
-            <Typography variant="h4" component="h1" align="center" gutterBottom>
+            <Typography variant="h2" component="h1" align="center" gutterBottom>
                 Accueil
             </Typography>
             <Grid container spacing={3}>
@@ -23,7 +23,7 @@ const Home = () => {
                         <Typography variant="h5" component="h2" gutterBottom>
                             Notifications
                         </Typography>
-                        <NotificationsList />
+                        <NotificationsComponent />
                     </Paper>
                 </Grid>
             </Grid>

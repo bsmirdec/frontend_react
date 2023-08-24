@@ -1,21 +1,31 @@
 // features/worksites/components/Worksite.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Tabs, Tab, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import useWorksiteQuery from "../hooks/useWorksiteQuery";
 import WorksiteEmployees from "../components/WorksiteEmployees";
+import UpdateWorksiteEmployees from "../components/UpdateWorksiteEmployees";
+import WorksiteInfo from "../components/WorksiteInfo";
+import UpdateWorksiteForm from "../components/UpdateWorksiteForm";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 
 function WorksiteContainer({ activeWorksite }) {
     const theme = useTheme();
     const [selectedTab, setSelectedTab] = useState(0);
+    const [isUpdateMode, setIsUpdateMode] = useState(false);
 
     const {
         data: worksiteData,
         isError,
         isLoading,
     } = useWorksiteQuery(activeWorksite);
+
+    useEffect(() => {
+        // Réinitialiser les états lorsque le chantier actif change
+        setSelectedTab(0);
+        setIsUpdateMode(false);
+    }, [activeWorksite]);
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -56,10 +66,34 @@ function WorksiteContainer({ activeWorksite }) {
                             sx={{ color: "white" }}
                         />
                         <Tab label="QSE" value={3} sx={{ color: "white" }} />
+                        <Tab label="Infos" value={4} sx={{ color: "white" }} />
                     </Tabs>
                 </Toolbar>
             </AppBar>
-            {selectedTab === 2 && <WorksiteEmployees worksite={worksiteData} />}
+            {selectedTab === 2 &&
+                (isUpdateMode ? (
+                    <UpdateWorksiteEmployees
+                        worksite={worksiteData}
+                        setIsUpdateMode={setIsUpdateMode}
+                    />
+                ) : (
+                    <WorksiteEmployees
+                        worksite={worksiteData}
+                        setIsUpdateMode={setIsUpdateMode}
+                    />
+                ))}
+            {selectedTab === 4 &&
+                (isUpdateMode ? (
+                    <UpdateWorksiteForm
+                        worksite={worksiteData}
+                        setIsUpdateMode={setIsUpdateMode}
+                    />
+                ) : (
+                    <WorksiteInfo
+                        worksite={worksiteData}
+                        setIsUpdateMode={setIsUpdateMode}
+                    />
+                ))}
         </Box>
     );
 }

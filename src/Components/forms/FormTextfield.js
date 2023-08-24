@@ -10,18 +10,16 @@ export default function FormTextField({ label, id, ...props }) {
     };
 
     return (
-        <div>
-            <TextField
-                id={id}
-                name={id}
-                label={label}
-                value={value}
-                required
-                fullWidth
-                margin="normal"
-                onChange={handleChange}
-                {...props}
-            ></TextField>
-        </div>
+        <TextField
+            id={id}
+            name={id}
+            label={label}
+            value={value}
+            required
+            fullWidth
+            margin="normal"
+            onChange={handleChange}
+            {...props}
+        ></TextField>
     );
 }

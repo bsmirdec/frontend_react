@@ -11,6 +11,7 @@ import {
     ListItemButton,
     ListItemText,
     Divider,
+    Toolbar,
 } from "@mui/material";
 
 const drawerWidth = 240;
@@ -40,14 +41,14 @@ const WorksiteList = ({ worksites, setActiveWorksite }) => {
                     [`& .MuiDrawer-paper`]: {
                         width: drawerWidth,
                         boxSizing: "border-box",
-                        position: "inherit",
                     },
                 }}
             >
+                <Toolbar />
                 <Box sx={{ overflow: "auto" }}>
                     <AllowedPermission
                         allowedPermissions={[
-                            PERMISSIONS.worksite_create_object,
+                            PERMISSIONS.worksite_create_object.code,
                         ]}
                     >
                         <ListItemButton onClick={handleCreateWorksite}>
@@ -57,7 +58,10 @@ const WorksiteList = ({ worksites, setActiveWorksite }) => {
                     </AllowedPermission>
                     <List>
                         {worksites.map((worksite) => (
-                            <ListItem key={worksite.name} disablePadding>
+                            <ListItem
+                                key={`${worksite.name}-${worksite.city}`}
+                                disablePadding
+                            >
                                 <ListItemButton
                                     onClick={() =>
                                         handleWorksiteClick(

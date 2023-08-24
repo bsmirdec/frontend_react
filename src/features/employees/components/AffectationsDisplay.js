@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useWorksitesForEmployeeQuery from "../hooks/useWorksitesForEmployee";
-import AddWorksitesModal from "./AddWorksiteModal";
+import AddWorksiteModal from "./AddWorksiteModal";
 import ConfirmDeleteWorksiteModal from "./ConfirmDeleteWorksiteModal";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import Loading from "../../../components/layout/Loading";
@@ -15,6 +15,8 @@ import {
     ListItem,
     Modal,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
 const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
@@ -27,6 +29,14 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
     const [isAddMode, setIsAddMode] = useState(false);
     const [worksitesToDelete, setWorksitesToDelete] = useState([]);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    if (isError) {
+        return <ErrorMessage message={isError.message} />;
+    }
 
     const toggleWorksiteToDelete = (worksiteId) => {
         if (worksitesToDelete.includes(worksiteId)) {
@@ -41,14 +51,6 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
     const handleAdd = () => {
         setIsAddMode(true);
     };
-
-    if (isLoading) {
-        return <Loading />;
-    }
-
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
-    }
 
     return (
         <Box
@@ -77,7 +79,9 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
                     <div key={worksite.worksite_id}>
                         {!isEditMode ? (
                             <List>
-                                <ListItem>{worksite.name}</ListItem>
+                                <ListItem>
+                                    {worksite.name} - {worksite.city}
+                                </ListItem>
                             </List>
                         ) : (
                             <FormControlLabel
@@ -94,7 +98,7 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
                                         }
                                     />
                                 }
-                                label={worksite.name}
+                                label={`${worksite.name} - ${worksite.city}`}
                             />
                         )}
                     </div>
@@ -103,17 +107,17 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
             {isEditMode ? (
                 <Box>
                     {isAddMode ? (
-                        <AddWorksitesModal
-                            open={isAddMode}
-                            onClose={() => setIsAddMode(false)}
-                            selectedEmployee={selectedEmployee}
-                            onConfirm={() => {
-                                setIsAddMode(false);
-                            }}
-                        />
+                        <div>
+                            <AddWorksiteModal
+                                open={isAddMode}
+                                onClose={() => setIsAddMode(false)}
+                                selectedEmployee={selectedEmployee}
+                            />
+                        </div>
                     ) : (
                         <Button
                             style={{ marginRight: "10px" }}
+                            startIcon={<AddIcon />}
                             variant="contained"
                             color="primary"
                             onClick={handleAdd}
@@ -124,7 +128,8 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
                     {worksitesToDelete.length > 0 && (
                         <Button
                             variant="contained"
-                            color="primary"
+                            startIcon={<DeleteIcon />}
+                            color="secondary"
                             onClick={() => setShowConfirmationModal(true)}
                         >
                             Supprimer
@@ -145,13 +150,15 @@ const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
                 open={showConfirmationModal}
                 onClose={() => setShowConfirmationModal(false)}
             >
-                <ConfirmDeleteWorksiteModal
-                    worksitesToDelete={worksitesToDelete}
-                    selectedEmployee={selectedEmployee}
-                    onCancel={() => setShowConfirmationModal(false)}
-                    open={showConfirmationModal}
-                    onClose={() => setShowConfirmationModal(false)}
-                />
+                <div>
+                    <ConfirmDeleteWorksiteModal
+                        worksitesToDelete={worksitesToDelete}
+                        selectedEmployee={selectedEmployee}
+                        onCancel={() => setShowConfirmationModal(false)}
+                        open={showConfirmationModal}
+                        onClose={() => setShowConfirmationModal(false)}
+                    />
+                </div>
             </Modal>
         </Box>
     );

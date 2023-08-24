@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
+import useCreateWorksiteNotificationMutation from "../../notifications/hooks/useCreateWorksiteNotificationMutation";
 
 class WorksiteAlreadyExists extends Error {
     constructor(message) {
@@ -33,7 +34,7 @@ const useCreateWorksiteMutation = () => {
 
     return useMutation(createWorksite, {
         onSuccess: (data) => {
-            queryClient.invalidateQueries("worksites");
+            queryClient.invalidateQueries("worksites", "notifications");
             return data;
         },
     });

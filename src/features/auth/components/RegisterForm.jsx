@@ -1,18 +1,20 @@
 import { useRef, useState, useEffect } from "react";
-import axiosInstance from "../../../services/api/axios";
+import { axiosInstance } from "../service/axiosPrivate";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useAdministratorListQuery from "../../employees/hooks/useAdministratorListQuery";
+import useCreateAdminNotificationMutation from "../../notifications/hooks/useCreateAdminNotificationMutation";
 import isEmailValid from "../../../utils/validation/email";
 import isPasswordValid from "../../../utils/validation/password";
 import isNameValid from "../../../utils/validation/name";
-
+import Loading from "../../../components/layout/Loading";
+import ErrorMessage from "../../../components/layout/ErrorMessage";
 import SubmitButton from "../../../components/forms/SubmitButton";
 import ValidationTextField from "../../../components/forms/ValidationTextField";
 import FormBox from "../../../components/forms/FormBox";
-import ErrorMessage from "../../../components/layout/ErrorMessage";
 // Material UI
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -20,6 +22,12 @@ import Container from "@mui/material/Container";
 
 export default function Register() {
     const navigate = useNavigate();
+    const {
+        data: administrators,
+        isError,
+        isLoading,
+    } = useAdministratorListQuery();
+    const createAdminNotification = useCreateAdminNotificationMutation();
 
     const isMatchPasswordValid = (matchPassword, password) => {
         return matchPassword === password;
@@ -50,6 +58,18 @@ export default function Register() {
         setErrorMessage("");
     }, [formData.email, formData.password]);
 
+    if (isLoading) {
+        return <Loading />;
+    }
+
+    if (isError) {
+        return <ErrorMessage message={isError.message} />;
+    }
+
+    const admin_ids = administrators.map((employee) => {
+        return employee.employee_id;
+    });
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(formData);
@@ -67,16 +87,19 @@ export default function Register() {
                 email: formData.email,
                 password: formData.password,
             });
-            console.log(response1);
-            console.log(response1.data);
 
             const response2 = await axiosInstance.post("users/match/", {
                 user_id: response1.data.user_id,
                 first_name: formData.first_name,
                 last_name: formData.last_name,
             });
-            console.log(response2);
             console.log(response2.data);
+
+            await createAdminNotification.mutateAsync({
+                content: `${formData.first_name} ${formData.last_name} a créé son compte, merci de bien vouloir le valider.`,
+                employees: admin_ids,
+            });
+
             updateFormData(initialFormData);
             navigate("/");
         } catch (error) {
@@ -178,7 +201,7 @@ export default function Register() {
                     </SubmitButton>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link to="/auth/login">
                                 Vous avez déjà un compte ? Se connecter
                             </Link>
                         </Grid>

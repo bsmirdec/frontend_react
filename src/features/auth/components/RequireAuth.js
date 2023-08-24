@@ -8,7 +8,13 @@ const RequireAuth = ({ children }) => {
 
     // Vérifier si l'utilisateur est authentifié
     if (!auth || !auth.accessToken) {
-        return <Navigate to="/auth/login" state={{ from: location }} replace />;
+        return (
+            <Navigate
+                to="/auth/login"
+                state={{ from: location.pathname }}
+                replace
+            />
+        );
     }
 
     // Rendre le contenu enfant s'il est autorisé

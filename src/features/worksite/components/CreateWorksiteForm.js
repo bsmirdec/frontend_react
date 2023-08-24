@@ -2,8 +2,10 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useBusiness } from "../../permissions/context/BusinessContext";
 import useWorksiteOptionsQuery from "../hooks/useWorksiteOptionsQuery";
 import useCreateWorksiteMutation from "../hooks/useCreateWorksiteMutation";
+import useCreateEmployeesNotification from "../../notifications/hooks/useCreateEmployeesNotification";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import SubmitButton from "../../../components/forms/SubmitButton";
@@ -30,12 +32,14 @@ const validationSchema = Yup.object().shape({
 });
 
 function CreateWorksiteForm({ page, setPage, worksite, setWorksite }) {
+    const { businessData } = useBusiness();
     const {
         data: worksiteOptions,
         isLoading,
         isError,
     } = useWorksiteOptionsQuery();
     const createWorksiteMutation = useCreateWorksiteMutation();
+    const createEmployeesNotification = useCreateEmployeesNotification();
 
     const formik = useFormik({
         initialValues: {
@@ -60,6 +64,11 @@ function CreateWorksiteForm({ page, setPage, worksite, setWorksite }) {
                     name: response.name,
                     city: response.city,
                 });
+                const notif = await createEmployeesNotification.mutateAsync({
+                    content: `le chantier ${response.name} - ${response.city} a été créé avec succès`,
+                    employees: [businessData.employeeId],
+                });
+                console.log(notif);
                 setPage(page + 1);
             } catch (error) {
                 console.error(
@@ -95,11 +104,7 @@ function CreateWorksiteForm({ page, setPage, worksite, setWorksite }) {
             alignItems="center"
             height="100vh"
         >
-            <ErrorMessage
-                message={Object.keys(formik.errors).map((key) => (
-                    <div key={key}>{formik.errors[key]}</div>
-                ))}
-            />
+            <ErrorMessage message={isError.message} />
 
             <form onSubmit={formik.handleSubmit} style={{ width: "80%" }}>
                 <Typography

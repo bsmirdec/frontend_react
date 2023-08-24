@@ -10,6 +10,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import useUpdatePermissionsMutation from "../hooks/useUpdatePermissionsMutation";
+import { PERMISSIONS } from "../../permissions/PERMISSIONS";
 
 const PermissionsDisplay = ({
     selectedEmployee,
@@ -85,7 +86,7 @@ const PermissionsDisplay = ({
                                 }}
                             />
                         }
-                        label={permission}
+                        label={PERMISSIONS[permission].label}
                     />
                 </div>
             ))}

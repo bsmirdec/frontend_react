@@ -1,15 +1,24 @@
 // features/worksites/components/WorksitesContainer.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useBusiness } from "../../permissions/context/BusinessContext";
 import WorksiteList from "../components/WorksiteList";
 import WorksiteContainer from "./WorksiteContainer";
 import useWorksiteListQuery from "../hooks/useWorksiteListQuery";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
-import { Typography } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 function WorksitesContainer() {
     const { data: worksitesData, isLoading, isError } = useWorksiteListQuery();
+    const { setBusinessData } = useBusiness();
     const [activeWorksite, setActiveWorksite] = useState(null);
+
+    useEffect(() => {
+        setBusinessData((prevData) => ({
+            ...prevData,
+            currentWorksite: activeWorksite,
+        }));
+    }, [activeWorksite, setBusinessData]);
 
     if (isLoading) {
         return <Loading />;
@@ -30,13 +39,25 @@ function WorksitesContainer() {
                     {activeWorksite ? (
                         <WorksiteContainer activeWorksite={activeWorksite} />
                     ) : (
-                        <Typography
-                            variant="body1"
-                            component="p"
-                            sx={{ margin: "auto", fontSize: "2em" }}
+                        <Box
+                            style={{
+                                margin: "auto",
+                                position: "relative",
+                                top: "50%",
+                                left: "100%",
+                                transform: "translate(-50%, -50%)",
+                            }}
+                            textAlign="center"
+                            my={3}
                         >
-                            Sélectionnez un chantier
-                        </Typography>
+                            <Typography
+                                variant="body1"
+                                component="p"
+                                sx={{ margin: "auto", fontSize: "2em" }}
+                            >
+                                Sélectionnez un chantier
+                            </Typography>
+                        </Box>
                     )}
                 </React.Fragment>
             </div>

@@ -9,7 +9,6 @@ const useWorksitesForEmployeeQuery = (employeeId) => {
             const response = await axiosPrivate.get(
                 `/managements/get-worksite-for-employee/${employeeId}/`,
             );
-
             return response.data;
         } catch (error) {
             throw error;

@@ -11,8 +11,8 @@ import {
 
 const CommandTable = () => {
     const commandes = [
-        { id: 1, numero: "CMD123", statut: "En cours" },
-        { id: 2, numero: "CMD456", statut: "En attente" },
+        { id: 1, numero: "CMD123", chantier: "Nanterre", statut: "En cours" },
+        { id: 2, numero: "CMD456", chantier: "Crépy", statut: "En attente" },
         // Ajoute d'autres commandes ici
     ];
 
@@ -22,6 +22,7 @@ const CommandTable = () => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Numéro de commande</TableCell>
+                        <TableCell>Chantier</TableCell>
                         <TableCell>Statut</TableCell>
                     </TableRow>
                 </TableHead>
@@ -29,6 +30,7 @@ const CommandTable = () => {
                     {commandes.map((commande) => (
                         <TableRow key={commande.id}>
                             <TableCell>{commande.numero}</TableCell>
+                            <TableCell>{commande.chantier}</TableCell>
                             <TableCell>{commande.statut}</TableCell>
                         </TableRow>
                     ))}

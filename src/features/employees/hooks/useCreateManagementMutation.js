@@ -21,8 +21,8 @@ const useCreateManagementMutation = () => {
             );
             return response.data;
         } catch (error) {
-            if (error.response.status === 400) {
-                throw new ManagementAlreadyExists(error.response.data.detail);
+            if (error.response) {
+                throw error;
             } else {
                 throw new Error(
                     "Une erreur s'est produite lors de la création de l'affectation.",
@@ -34,6 +34,7 @@ const useCreateManagementMutation = () => {
     return useMutation(createManagement, {
         onSuccess: (data) => {
             queryClient.invalidateQueries("worksites-for-employee");
+            queryClient.invalidateQueries("employees-for-worksite");
             return data;
         },
     });

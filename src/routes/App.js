@@ -12,17 +12,19 @@ import WebFont from "webfontloader";
 //Material UI
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-//features
+//Authentification
 import AuthContainer from "../features/auth/containers/AuthContainer";
 
 // pages
 import HomeContainer from "../features/home/container/HomeContainer";
 import WorksitesContainer from "../features/worksite/container/WorksitesContainer";
 import NewWorksiteContainer from "../features/worksite/container/NewWorksiteContainer";
-import CommandContainer from "../features/command/containers/CommandContainer";
+import UpdateWorksiteContainer from "../features/worksite/container/UpdateWorksiteContainer";
+import CommandContainer from "../features/request/containers/CommandContainer";
 import StaffContainer from "../features/employees/containers/StaffContainer";
 
 // routes
+import PrivateRoute from "../features/auth/components/PrivateRoute";
 import RootLayout from "./RootLayout";
 import RequireAuth from "../features/auth/components/RequireAuth";
 // import PersistLogin from "../features/auth/components/PersistLogin";
@@ -46,9 +48,6 @@ const theme = createTheme({
         },
         info: {
             main: "#14638a",
-        },
-        background: {
-            default: "#f2f2f2",
         },
     },
     typography: {
@@ -79,8 +78,9 @@ const router = createBrowserRouter(
                                 element={
                                     <RequirePermission
                                         allowedPermissions={[
-                                            PERMISSIONS.worksite_view_list,
-                                            PERMISSIONS.worksite_retrieve_object,
+                                            PERMISSIONS.worksite_view_list.code,
+                                            PERMISSIONS.worksite_retrieve_object
+                                                .code,
                                         ]}
                                     >
                                         <WorksitesContainer />
@@ -92,10 +92,24 @@ const router = createBrowserRouter(
                                 element={
                                     <RequirePermission
                                         allowedPermissions={[
-                                            PERMISSIONS.worksite_create_object,
+                                            PERMISSIONS.worksite_create_object
+                                                .code,
                                         ]}
                                     >
                                         <NewWorksiteContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                            <Route
+                                path="update/*"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.worksite_update_object
+                                                .code,
+                                        ]}
+                                    >
+                                        <UpdateWorksiteContainer />
                                     </RequirePermission>
                                 }
                             />
@@ -104,13 +118,12 @@ const router = createBrowserRouter(
                 }
             />
             <Route
-                path="command/"
+                path="request/"
                 element={
                     <RequireAuth>
                         <RequirePermission
                             allowedPermissions={[
-                                PERMISSIONS.command_view_list,
-                                PERMISSIONS.command_retrieve_object,
+                                PERMISSIONS.request_view_list.code,
                             ]}
                         >
                             <CommandContainer />
@@ -124,7 +137,7 @@ const router = createBrowserRouter(
                     <RequireAuth>
                         <RequirePermission
                             allowedPermissions={[
-                                PERMISSIONS.employee_update_object,
+                                PERMISSIONS.employee_update_object.code,
                             ]}
                         >
                             <StaffContainer />

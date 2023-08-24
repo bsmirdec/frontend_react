@@ -24,6 +24,7 @@ const useUpdateWorksiteMutation = () => {
             onSuccess: () => {
                 // Invalidate and refetch the worksite list query
                 queryClient.invalidateQueries("worksites");
+                queryClient.invalidateQueries("worksite");
             },
         },
     );

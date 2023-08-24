@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useBusiness } from "../../permissions/context/BusinessContext";
 import useWorksitesForEmployeeQuery from "../hooks/useWorksitesForEmployee";
 import useCreateManagementMutation from "../hooks/useCreateManagementMutation";
@@ -14,7 +14,7 @@ import {
     Button,
 } from "@mui/material";
 
-const AddWorksitesModal = ({ selectedEmployee, open, onClose, onConfirm }) => {
+const AddWorksiteModal = ({ selectedEmployee, open, onClose }) => {
     const { businessData } = useBusiness();
     const {
         data: worksites,
@@ -23,10 +23,6 @@ const AddWorksitesModal = ({ selectedEmployee, open, onClose, onConfirm }) => {
     } = useWorksitesForEmployeeQuery(businessData.employeeId);
     const [selectedWorksite, setSelectedWorksite] = useState("");
     const createManagement = useCreateManagementMutation();
-
-    useEffect(() => {
-        console.log(worksites);
-    }, []);
 
     const onCreateManagement = async (event) => {
         event.preventDefault();
@@ -107,4 +103,4 @@ const AddWorksitesModal = ({ selectedEmployee, open, onClose, onConfirm }) => {
     );
 };
 
-export default AddWorksitesModal;
+export default AddWorksiteModal;

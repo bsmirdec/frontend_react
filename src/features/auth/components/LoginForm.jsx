@@ -29,7 +29,7 @@ export default function Login() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from || "/";
 
     const emailRef = useRef();
     const errorRef = useRef();
@@ -69,9 +69,9 @@ export default function Login() {
                 if (
                     error.response &&
                     error.response.data &&
-                    error.response.data.error
+                    error.response.data.message
                 ) {
-                    setErrorMessage(error.response.data.error);
+                    setErrorMessage(error.response.data.message);
                 } else {
                     setErrorMessage(
                         "Une erreur s'est produite lors de la connexion. Veuillez réessayer.",
@@ -98,11 +98,13 @@ export default function Login() {
                     manager,
                     permissions,
                 });
+
+                if (employeeId) {
+                    navigate(from, { replace: true });
+                }
             };
 
             fetchEmployee(auth.userId);
-
-            navigate(from, { replace: true });
         }
     }, [
         auth.accessToken,
@@ -112,6 +114,7 @@ export default function Login() {
         navigate,
         axiosPrivate,
     ]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

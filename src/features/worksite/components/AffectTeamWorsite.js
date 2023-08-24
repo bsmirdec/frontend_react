@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSiteDirectorListQuery from "../../employees/hooks/useDirectorListQuery";
 import useCreateManagementMutation from "../../employees/hooks/useCreateManagementMutation";
+import useCreateWorksiteNotificationMutation from "../../notifications/hooks/useCreateWorksiteNotificationMutation";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import SuccessMessage from "../../../components/layout/SuccessMessage";
@@ -23,6 +24,7 @@ const AffectTeamWorksite = ({ page, setPage, worksite }) => {
         isError,
     } = useSiteDirectorListQuery();
     const createManagementMutation = useCreateManagementMutation();
+    const createWorksiteNotification = useCreateWorksiteNotificationMutation();
     const [selectedDirector, setSelectedDirector] = useState("");
     const navigate = useNavigate();
 
@@ -33,7 +35,12 @@ const AffectTeamWorksite = ({ page, setPage, worksite }) => {
                 worksite_id: worksite.worksiteId,
                 employee_id: selectedDirector,
             });
+            const notif = await createWorksiteNotification.mutateAsync({
+                worksite_id: worksite.worksiteId,
+                content: `le chantier ${worksite.name} - ${worksite.city} a été créé avec succès. Votre équipe a été affecté au chantier, veuillez compléter les informations sur la page "Chantier" correspondante`,
+            });
             console.log("Affectation au chantier:", response);
+            console.log(notif);
             navigate("/worksite/");
         } catch (error) {
             console.error("Erreur lors de l'affectation:", error);
