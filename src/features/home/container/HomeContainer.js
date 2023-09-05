@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Typography, Grid, Paper } from "@mui/material";
-import CommandTable from "../../request/components/CommandTable";
+import OrderTable from "../../request/components/OrderTable";
 import NotificationsComponent from "../../notifications/components/NotificationsList";
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
                         <Typography variant="h5" component="h2" gutterBottom>
                             Commandes
                         </Typography>
-                        <CommandTable />
+                        <OrderTable />
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={6}>

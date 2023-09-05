@@ -6,7 +6,15 @@ import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import AffectationsDisplay from "../components/AffectationsDisplay";
 import PermissionsDisplay from "../components/PermissionsDisplay";
-import { Typography, Card, CardContent, Button, Modal } from "@mui/material";
+import {
+    Typography,
+    Card,
+    CardContent,
+    Button,
+    Modal,
+    AppBar,
+    Toolbar,
+} from "@mui/material";
 
 const StaffContainer = () => {
     const { auth } = useAuth();
@@ -74,6 +82,9 @@ const StaffContainer = () => {
 
     return (
         <div>
+            <AppBar position="static">
+                <Toolbar />
+            </AppBar>
             <Typography variant="h4">
                 Équipe de {businessData.firstName}
             </Typography>

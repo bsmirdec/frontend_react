@@ -17,9 +17,16 @@ import {
     Collapse,
     Toolbar,
 } from "@mui/material";
-import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import { ExpandMore, ExpandLess, GppMaybe } from "@mui/icons-material";
 import SearchIcon from "@mui/icons-material/Search";
 import Hardware from "@mui/icons-material/Hardware";
+
+const iconColors = [
+    { threshold: 0, name: "#DAF7A6" },
+    { threshold: 1, name: " #FFC300 " },
+    { threshold: 2, name: " #FF5733 " },
+    { threshold: 3, name: " #C70039 " },
+];
 
 const CategoryDrawer = ({
     open,
@@ -146,16 +153,60 @@ const CategoryDrawer = ({
                                                             filteredType.type_id,
                                                         )
                                                     }
+                                                    style={{
+                                                        display: "flex",
+                                                        justifyContent:
+                                                            "space-between",
+                                                    }}
                                                 >
                                                     <ListItemText
                                                         primary={
                                                             filteredType.name
                                                         }
                                                     />
+                                                    <Box
+                                                        style={{
+                                                            position: "inherit",
+                                                            right: 0,
+                                                        }}
+                                                    >
+                                                        <GppMaybe
+                                                            style={{
+                                                                fill:
+                                                                    iconColors.find(
+                                                                        (
+                                                                            item,
+                                                                        ) =>
+                                                                            item.threshold ===
+                                                                            filteredType.threshold,
+                                                                    )?.name ||
+                                                                    "#000",
+                                                            }}
+                                                        />
+                                                    </Box>
                                                 </ListItemButton>
                                             ))}
                                 </List>
                             </Collapse>
+                        </Box>
+                    ))}
+                    <Divider />
+                    <Typography variant="h6" sx={{ ml: 2 }}>
+                        Légende
+                    </Typography>
+                    {iconColors.map((item) => (
+                        <Box
+                            key={item.threshold}
+                            m={2}
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <GppMaybe style={{ fill: item.name }} />
+                            <Typography>
+                                Seuil de validation: {item.threshold}
+                            </Typography>
                         </Box>
                     ))}
                 </List>

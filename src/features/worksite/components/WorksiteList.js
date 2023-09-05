@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AllowedPermission from "../../permissions/components/AllowedPermission";
 import { PERMISSIONS } from "../../permissions/PERMISSIONS";
+import { useTheme } from "@emotion/react";
 import {
     Box,
     CssBaseline,
@@ -16,8 +17,9 @@ import {
 
 const drawerWidth = 240;
 
-const WorksiteList = ({ worksites, setActiveWorksite }) => {
+const WorksiteList = ({ worksites, activeWorksite, setActiveWorksite }) => {
     const navigate = useNavigate();
+    const theme = useTheme();
 
     function handleWorksiteClick(worksiteId) {
         const selectedWorksite = worksites.find(
@@ -68,6 +70,18 @@ const WorksiteList = ({ worksites, setActiveWorksite }) => {
                                             worksite.worksite_id,
                                         )
                                     }
+                                    style={{
+                                        color:
+                                            worksite.worksite_id ===
+                                            activeWorksite
+                                                ? "#FFFFFF"
+                                                : "#000000",
+                                        backgroundColor:
+                                            worksite.worksite_id ===
+                                            activeWorksite
+                                                ? theme.palette.primary.light
+                                                : "transparent",
+                                    }}
                                 >
                                     <ListItemText
                                         primary={

@@ -6,14 +6,12 @@ const useRefreshToken = () => {
     const { auth, setAuth } = useAuth();
 
     const refresh = async () => {
-        console.log(auth);
         const refreshToken = auth?.refreshToken;
         // || localStorage.getItem("refresh");
         const response = await axiosInstance.post("/token/refresh/", {
             refresh: refreshToken,
         });
         setAuth((prev) => {
-            console.log(response.data.access);
             return {
                 ...prev,
                 accessToken: response.data.access,

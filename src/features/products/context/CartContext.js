@@ -10,10 +10,6 @@ export function CartProvider({ children }) {
     const [cart, setCart] = useState([]);
     const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
 
-    useEffect(() => {
-        console.log(cart);
-    }, [cart]);
-
     const addToCart = (product) => {
         const existingItemIndex = cart.findIndex(
             (item) => item.product.product_id === product.product_id,
@@ -63,6 +59,7 @@ export function CartProvider({ children }) {
         <CartContext.Provider
             value={{
                 cart,
+                setCart,
                 addToCart,
                 incrementQuantity,
                 decrementQuantity,

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useCart } from "../../../features/request/context/CartContext";
+import { useCart } from "../../../features/products/context/CartContext";
 import { Box, IconButton, Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CartModal from "../../../features/request/components/CartModal";
+import CartModal from "../../../features/products/components/CartModal";
 
 const CartIcon = () => {
     const location = useLocation();
@@ -12,8 +12,8 @@ const CartIcon = () => {
     const [cartModalOpen, setCartModalOpen] = useState(false);
 
     const handleCartOpen = () => {
-        location.pathname === "/request/" && toggleCartDrawer();
-        location.pathname !== "/request/" && setCartModalOpen(!cartModalOpen);
+        location.pathname === "/product/" && toggleCartDrawer();
+        location.pathname !== "/product/" && setCartModalOpen(!cartModalOpen);
     };
 
     const handleCartModalClose = () => {

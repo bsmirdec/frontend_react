@@ -71,4 +71,8 @@ export const PERMISSIONS = {
         code: "management_delete_object",
         label: "Supprimer une affectation",
     },
+    product_view_list: {
+        code: "product_view_list",
+        label: "Voir le catalogue",
+    },
 };

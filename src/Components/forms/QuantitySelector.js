@@ -18,13 +18,15 @@ const QuantitySelector = ({ quantity, onIncrement, onDecrement }) => {
                                 flexDirection: "column",
                             }}
                         >
-                            <IconButton onClick={onIncrement} size="small">
-                                <Add
-                                    style={{
-                                        color: theme.palette.primary.main,
-                                    }}
-                                />
-                            </IconButton>
+                            {onIncrement && (
+                                <IconButton onClick={onIncrement} size="small">
+                                    <Add
+                                        style={{
+                                            color: theme.palette.primary.main,
+                                        }}
+                                    />
+                                </IconButton>
+                            )}
                             <IconButton onClick={onDecrement} size="small">
                                 <Remove
                                     style={{

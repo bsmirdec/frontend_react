@@ -20,11 +20,15 @@ import HomeContainer from "../features/home/container/HomeContainer";
 import WorksitesContainer from "../features/worksite/container/WorksitesContainer";
 import NewWorksiteContainer from "../features/worksite/container/NewWorksiteContainer";
 import UpdateWorksiteContainer from "../features/worksite/container/UpdateWorksiteContainer";
-import CommandContainer from "../features/request/containers/CommandContainer";
+import ProductContainer from "../features/products/containers/ProductContainer";
+import RequestContainer from "../features/request/containers/RequestContainer";
+import DeliveryContainer from "../features/deliveries/container/DeliveryContainer";
+import CreateOrderContainer from "../features/request/containers/CreateOrderContainer";
+import OrderContainer from "../features/request/containers/OrderContainer";
+import ReturnContainer from "../features/request/containers/ReturnContainer";
 import StaffContainer from "../features/employees/containers/StaffContainer";
 
 // routes
-import PrivateRoute from "../features/auth/components/PrivateRoute";
 import RootLayout from "./RootLayout";
 import RequireAuth from "../features/auth/components/RequireAuth";
 // import PersistLogin from "../features/auth/components/PersistLogin";
@@ -118,7 +122,7 @@ const router = createBrowserRouter(
                 }
             />
             <Route
-                path="request/"
+                path="product/"
                 element={
                     <RequireAuth>
                         <RequirePermission
@@ -126,7 +130,81 @@ const router = createBrowserRouter(
                                 PERMISSIONS.request_view_list.code,
                             ]}
                         >
-                            <CommandContainer />
+                            <ProductContainer />
+                        </RequirePermission>
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="request/*"
+                element={
+                    <RequireAuth>
+                        <Routes>
+                            <Route
+                                path="/"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.request_view_list.code,
+                                        ]}
+                                    >
+                                        <RequestContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                            <Route
+                                path="order/"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.request_create_object
+                                                .code,
+                                        ]}
+                                    >
+                                        <CreateOrderContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                            <Route
+                                path="order/:orderId"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.request_retrieve_object
+                                                .code,
+                                        ]}
+                                    >
+                                        <OrderContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                            <Route
+                                path="return/"
+                                element={
+                                    <RequirePermission
+                                        allowedPermissions={[
+                                            PERMISSIONS.request_create_object
+                                                .code,
+                                        ]}
+                                    >
+                                        <ReturnContainer />
+                                    </RequirePermission>
+                                }
+                            />
+                        </Routes>
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="delivery/:deliveryId"
+                element={
+                    <RequireAuth>
+                        <RequirePermission
+                            allowedPermissions={[
+                                PERMISSIONS.request_view_list.code,
+                            ]}
+                        >
+                            <DeliveryContainer />
                         </RequirePermission>
                     </RequireAuth>
                 }

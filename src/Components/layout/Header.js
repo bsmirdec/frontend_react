@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import useAuth from "../../features/auth/hooks/useAuth";
 import { useBusiness } from "../../features/permissions/context/BusinessContext";
-import { useCart } from "../../features/request/context/CartContext";
+import { useCart } from "../../features/products/context/CartContext";
 import Logo from "./headercomponents/Logo";
 import MobilLogo from "./headercomponents/MobilLogo";
 import HomeLink from "./headercomponents/HomeLink";
@@ -18,6 +18,7 @@ import UserMenu from "./headercomponents/UserMenu";
 
 const pages = [
     { address: "worksite", name: "Chantier" },
+    { address: "product", name: "Catalogue" },
     { address: "request", name: "Commande" },
     { address: "employee", name: "Management" },
 ];

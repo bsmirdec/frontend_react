@@ -13,7 +13,7 @@ import MobileCategoryDrawer from "../components/MobileCategoryDrawer";
 import CartDrawer from "../components/CartDrawer";
 import Catalogue from "../components/Catalogue";
 
-const CommandContainer = () => {
+const ProductContainer = () => {
     const { cartDrawerOpen } = useCart();
     const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
     const [selectedType, setSelectedType] = useState(null);
@@ -66,4 +66,4 @@ const CommandContainer = () => {
     );
 };
 
-export default CommandContainer;
+export default ProductContainer;

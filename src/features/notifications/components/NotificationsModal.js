@@ -1,11 +1,19 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../auth/hooks/useAuth";
 import useNotificationQuery from "../hooks/useNotificationQuery";
 import useDeleteNotificationMutation from "../hooks/useDeleteNotificationMutation";
 import useUpdateReadNotificationMutation from "../hooks/useUpdateReadNotificationMutation";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
 import Loading from "../../../components/layout/Loading";
-import { Modal, Box, Paper, Typography, IconButton } from "@mui/material";
+import {
+    Modal,
+    Box,
+    Paper,
+    Typography,
+    IconButton,
+    Badge,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/system";
 
@@ -17,15 +25,19 @@ const modalStyle = {
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 4,
+    margin: "20px",
+    padding: "20px",
+    maxHeight: "50%",
+    overflow: "auto",
 };
 
 const DateTime = styled("span")({
     color: "grey",
-    textDecoration: "underline",
+    textDecoration: "bold",
     marginRight: "10px",
 });
 
-const StyledPaper = styled(Paper)(({ is_read }) => ({
+const StyledPaper = styled(Paper)(({ is_read, link }) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -33,8 +45,9 @@ const StyledPaper = styled(Paper)(({ is_read }) => ({
     padding: "10px",
     borderRadius: "5px",
     fontWeight: 600,
-    backgroundColor: is_read ? "#f5f5f5" : "#e1f5fe",
-    cursor: is_read ? "default" : "pointer",
+    backgroundColor: "#f5f5f5",
+    cursor: is_read ? (link ? "pointer" : "default") : "pointer",
+    position: "relative",
 }));
 
 const NotificationsModal = ({
@@ -44,6 +57,7 @@ const NotificationsModal = ({
     setNewNotifications,
 }) => {
     const { auth } = useAuth();
+    const navigate = useNavigate();
     const {
         data: notificationsData,
         isLoading,
@@ -67,6 +81,10 @@ const NotificationsModal = ({
                 notification.notif_id,
             );
             console.log(updateNotif);
+        }
+        if (notification.link) {
+            navigate(notification.link);
+            onClose();
         }
     };
 
@@ -103,7 +121,18 @@ const NotificationsModal = ({
                         elevation={3}
                         onClick={() => handleNotificationClick(notification)}
                         {...(notification.is_read ? { is_read: "true" } : {})}
+                        {...(notification.link ? { link: "true" } : {})}
                     >
+                        <Badge
+                            color="error"
+                            badgeContent="!"
+                            style={{
+                                display: notification.is_read ? "none" : "flex",
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                            }}
+                        ></Badge>
                         <Typography variant="body1">
                             <DateTime>
                                 {new Date(
@@ -114,9 +143,10 @@ const NotificationsModal = ({
                         </Typography>
                         <IconButton
                             color="error"
-                            onClick={() =>
-                                handleDeleteNotification(notification.notif_id)
-                            }
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteNotification(notification.notif_id);
+                            }}
                         >
                             <DeleteIcon />
                         </IconButton>

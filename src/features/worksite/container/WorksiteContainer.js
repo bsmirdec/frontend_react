@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Tabs, Tab, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import useWorksiteQuery from "../hooks/useWorksiteQuery";
+import StockContainer from "../../stock/containers/StockContainer";
 import WorksiteEmployees from "../components/WorksiteEmployees";
 import UpdateWorksiteEmployees from "../components/UpdateWorksiteEmployees";
 import WorksiteInfo from "../components/WorksiteInfo";
@@ -45,6 +46,9 @@ function WorksiteContainer({ activeWorksite }) {
 
     return (
         <Box maxWidth="lg">
+            <AppBar position="static">
+                <Toolbar />
+            </AppBar>
             <AppBar
                 position="static"
                 style={{ backgroundColor: theme.palette.secondary.light }}
@@ -70,6 +74,7 @@ function WorksiteContainer({ activeWorksite }) {
                     </Tabs>
                 </Toolbar>
             </AppBar>
+            {selectedTab === 0 && <StockContainer worksite={worksiteData} />}
             {selectedTab === 2 &&
                 (isUpdateMode ? (
                     <UpdateWorksiteEmployees

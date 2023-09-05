@@ -89,6 +89,7 @@ export default function Login() {
                 const position = employee.position;
                 const manager = employee.manager;
                 const permissions = employee.permissions;
+                const threshold = employee.threshold;
 
                 setBusinessData({
                     employeeId,
