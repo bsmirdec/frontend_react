@@ -20,22 +20,19 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 
 const AffectationsDisplay = ({ selectedEmployee, onClose }) => {
-    const {
-        data: worksites,
-        isLoading,
-        isError,
-    } = useWorksitesForEmployeeQuery(selectedEmployee.employee_id);
+    const { worksites, isWorksitesLoading, isWorksitesError, worksitesError } =
+        useWorksitesForEmployeeQuery(selectedEmployee.employee_id);
     const [isEditMode, setIsEditMode] = useState(false);
     const [isAddMode, setIsAddMode] = useState(false);
     const [worksitesToDelete, setWorksitesToDelete] = useState([]);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
-    if (isLoading) {
+    if (isWorksitesLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isWorksitesError) {
+        return <ErrorMessage message={worksitesError.message} />;
     }
 
     const toggleWorksiteToDelete = (worksiteId) => {

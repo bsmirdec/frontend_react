@@ -23,6 +23,7 @@ const CartDrawer = () => {
         setCart,
         cartDrawerOpen,
         toggleCartDrawer,
+        changeQuantity,
         incrementQuantity,
         decrementQuantity,
         removeFromCart,
@@ -76,6 +77,12 @@ const CartDrawer = () => {
                                     onDecrement={() =>
                                         decrementQuantity(
                                             item.product.product_id,
+                                        )
+                                    }
+                                    onChange={(newValue) =>
+                                        changeQuantity(
+                                            item.product.product_id,
+                                            newValue,
                                         )
                                     }
                                 />

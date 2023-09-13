@@ -1,4 +1,6 @@
 import React from "react";
+import AllowedPermission from "../../permissions/components/AllowedPermission";
+import { PERMISSIONS } from "../../permissions/PERMISSIONS";
 import { Typography, Paper, Box, Grid, Button, ListItem } from "@mui/material";
 
 const subtitles = {
@@ -44,21 +46,25 @@ const WorksiteInfo = ({ worksite, setIsUpdateMode }) => {
                     )}
                 </Grid>
             </Paper>
-            <ListItem
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                }}
+            <AllowedPermission
+                allowedPermissions={[PERMISSIONS.worksite_update_object.code]}
             >
-                <Button
-                    onClick={() => {
-                        setIsUpdateMode(true);
+                <ListItem
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
                     }}
-                    color="primary"
                 >
-                    Modifier
-                </Button>
-            </ListItem>
+                    <Button
+                        onClick={() => {
+                            setIsUpdateMode(true);
+                        }}
+                        color="primary"
+                    >
+                        Modifier
+                    </Button>
+                </ListItem>
+            </AllowedPermission>
         </Box>
     );
 };

@@ -4,6 +4,8 @@ import { AppBar, Toolbar, Typography, Tabs, Tab, Box } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import useWorksiteQuery from "../hooks/useWorksiteQuery";
 import StockContainer from "../../stock/containers/StockContainer";
+import BennesContainer from "../../newFeatures/BennesContainer";
+import QSEContainer from "../../newFeatures/QSEContainer";
 import WorksiteEmployees from "../components/WorksiteEmployees";
 import UpdateWorksiteEmployees from "../components/UpdateWorksiteEmployees";
 import WorksiteInfo from "../components/WorksiteInfo";
@@ -14,18 +16,16 @@ import ErrorMessage from "../../../components/layout/ErrorMessage";
 function WorksiteContainer({ activeWorksite }) {
     const theme = useTheme();
     const [selectedTab, setSelectedTab] = useState(0);
-    const [isUpdateMode, setIsUpdateMode] = useState(false);
+    const [isEmployeesUpdateMode, setIsEmployeesUpdateMode] = useState(false);
+    const [isWorksiteUpdateMode, setIsWorksiteUpdateMode] = useState(false);
 
-    const {
-        data: worksiteData,
-        isError,
-        isLoading,
-    } = useWorksiteQuery(activeWorksite);
+    const { worksite, isWorksiteLoading, isWorksiteError, worksiteError } =
+        useWorksiteQuery(activeWorksite);
 
     useEffect(() => {
-        // Réinitialiser les états lorsque le chantier actif change
         setSelectedTab(0);
-        setIsUpdateMode(false);
+        setIsEmployeesUpdateMode(false);
+        setIsWorksiteUpdateMode(false);
     }, [activeWorksite]);
 
     const handleTabChange = (event, newValue) => {
@@ -36,19 +36,16 @@ function WorksiteContainer({ activeWorksite }) {
         return <p>Aucun chantier sélectionné</p>;
     }
 
-    if (isLoading) {
+    if (isWorksiteLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isWorksiteError) {
+        return <ErrorMessage message={worksiteError.message} />;
     }
 
     return (
         <Box maxWidth="lg">
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <AppBar
                 position="static"
                 style={{ backgroundColor: theme.palette.secondary.light }}
@@ -59,7 +56,7 @@ function WorksiteContainer({ activeWorksite }) {
                         component="div"
                         sx={{ flexGrow: 1, color: "white" }}
                     >
-                        {worksiteData.city} - {worksiteData.name}
+                        {worksite.city} - {worksite.name}
                     </Typography>
                     <Tabs value={selectedTab} onChange={handleTabChange}>
                         <Tab label="Stock" value={0} sx={{ color: "white" }} />
@@ -74,29 +71,31 @@ function WorksiteContainer({ activeWorksite }) {
                     </Tabs>
                 </Toolbar>
             </AppBar>
-            {selectedTab === 0 && <StockContainer worksite={worksiteData} />}
+            {selectedTab === 0 && <StockContainer worksite={worksite} />}
+            {selectedTab === 1 && <BennesContainer />}
             {selectedTab === 2 &&
-                (isUpdateMode ? (
+                (isEmployeesUpdateMode ? (
                     <UpdateWorksiteEmployees
-                        worksite={worksiteData}
-                        setIsUpdateMode={setIsUpdateMode}
+                        worksite={worksite}
+                        setIsUpdateMode={setIsEmployeesUpdateMode}
                     />
                 ) : (
                     <WorksiteEmployees
-                        worksite={worksiteData}
-                        setIsUpdateMode={setIsUpdateMode}
+                        worksite={worksite}
+                        setIsUpdateMode={setIsEmployeesUpdateMode}
                     />
                 ))}
+            {selectedTab === 3 && <QSEContainer />}
             {selectedTab === 4 &&
-                (isUpdateMode ? (
+                (isWorksiteUpdateMode ? (
                     <UpdateWorksiteForm
-                        worksite={worksiteData}
-                        setIsUpdateMode={setIsUpdateMode}
+                        worksite={worksite}
+                        setIsUpdateMode={setIsWorksiteUpdateMode}
                     />
                 ) : (
                     <WorksiteInfo
-                        worksite={worksiteData}
-                        setIsUpdateMode={setIsUpdateMode}
+                        worksite={worksite}
+                        setIsUpdateMode={setIsWorksiteUpdateMode}
                     />
                 ))}
         </Box>

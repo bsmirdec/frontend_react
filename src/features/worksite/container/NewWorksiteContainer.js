@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import React from "react";
 import CreateWorksiteForm from "../components/CreateWorksiteForm";
 import AffectTeamWorksite from "../components/AffectTeamWorsite";
+import MaxStockForm from "../../stock/components/MaxStockForm";
+import { Box } from "@mui/material";
 
 function NewWorksiteContainer() {
     const [page, setPage] = useState(0);
@@ -12,7 +14,7 @@ function NewWorksiteContainer() {
     }, [worksite]);
 
     return (
-        <div>
+        <Box style={{ overflow: "auto" }}>
             {page === 0 && (
                 <CreateWorksiteForm
                     page={page}
@@ -28,8 +30,15 @@ function NewWorksiteContainer() {
                     worksite={worksite}
                 />
             )}
+            {page === 2 && (
+                <MaxStockForm
+                    page={page}
+                    setPage={setPage}
+                    worksite={worksite}
+                />
+            )}
             ;
-        </div>
+        </Box>
     );
 }
 

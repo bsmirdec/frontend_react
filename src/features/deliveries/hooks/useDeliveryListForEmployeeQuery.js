@@ -11,17 +11,20 @@ const useDeliveryListForEmployeeQuery = (employeeId) => {
             );
             return response.data;
         } catch (error) {
-            if (error.response && error.response.status === 404) {
-                throw new Error(error.response.data.message);
-            } else {
-                throw new Error(
-                    "Une erreur s'est produite lors de la récupération des livraisons.",
-                );
-            }
+            throw error;
         }
     };
 
-    return useQuery("deliveries", getDeliveryForEmployee);
+    const { data, isLoading, isError, error } = useQuery(
+        "deliveries",
+        getDeliveryForEmployee,
+    );
+    return {
+        deliveries: data,
+        isDeliveriesLoading: isLoading,
+        isDeliveriesError: isError,
+        deliveriesError: error,
+    };
 };
 
 export default useDeliveryListForEmployeeQuery;

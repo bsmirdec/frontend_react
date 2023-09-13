@@ -9,7 +9,8 @@ import { Grid, Box } from "@mui/material";
 
 const Catalogue = ({ selectedType }) => {
     const { addToCart } = useCart();
-    const { data: products, isLoading, isError } = useProductsListQuery();
+    const { products, isProductsLoading, isProductsError, error } =
+        useProductsListQuery();
     const [productModalOpen, setProductModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -30,12 +31,12 @@ const Catalogue = ({ selectedType }) => {
         addToCart(product);
     };
 
-    if (isLoading) {
+    if (isProductsLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isProductsError) {
+        return <ErrorMessage message={error.message} />;
     }
 
     return (
@@ -49,7 +50,7 @@ const Catalogue = ({ selectedType }) => {
                     .filter(
                         (product) =>
                             selectedType === null ||
-                            product.type === selectedType,
+                            product.type.type_id === selectedType,
                     )
                     .map((product) => (
                         <Grid

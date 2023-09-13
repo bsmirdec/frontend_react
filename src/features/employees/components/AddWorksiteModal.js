@@ -16,11 +16,8 @@ import {
 
 const AddWorksiteModal = ({ selectedEmployee, open, onClose }) => {
     const { businessData } = useBusiness();
-    const {
-        data: worksites,
-        isLoading,
-        isError,
-    } = useWorksitesForEmployeeQuery(businessData.employeeId);
+    const { worksites, isWorksitesLoading, isWorksitesError, worksitesError } =
+        useWorksitesForEmployeeQuery(businessData.employeeId);
     const [selectedWorksite, setSelectedWorksite] = useState("");
     const createManagement = useCreateManagementMutation();
 
@@ -40,12 +37,12 @@ const AddWorksiteModal = ({ selectedEmployee, open, onClose }) => {
         }
     };
 
-    if (isLoading) {
+    if (isWorksitesLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isWorksitesError) {
+        return <ErrorMessage message={worksitesError.message} />;
     }
 
     return (

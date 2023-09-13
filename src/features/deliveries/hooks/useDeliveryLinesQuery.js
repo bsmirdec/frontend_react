@@ -18,7 +18,16 @@ const useDeliveryLinesQuery = (deliveryId) => {
         }
     };
 
-    return useQuery("delivery-lines", getDeliveryLinesForOrder);
+    const { data, isLoading, isError, error } = useQuery(
+        "delivery-lines",
+        getDeliveryLinesForOrder,
+    );
+    return {
+        deliveryLines: data,
+        isDeliveryLinesLoading: isLoading,
+        isDeliveryLinesError: isError,
+        deliveryLinesError: error,
+    };
 };
 
 export default useDeliveryLinesQuery;

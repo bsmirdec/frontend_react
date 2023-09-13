@@ -106,7 +106,10 @@ const CategoryDrawer = ({
                         <ListItemButton>
                             <ListItemText
                                 primary="Réinitialiser"
-                                onClick={() => setSelectedType(null)}
+                                onClick={() => {
+                                    setSelectedType(null);
+                                    setOpenCategories([]);
+                                }}
                             />
                         </ListItemButton>
                     )}

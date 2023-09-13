@@ -6,43 +6,75 @@ import DisplayDelivery from "../components/DisplayDelivery";
 import DeliveryValidationButton from "../components/DeliveryValidationButton";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import BackButton from "../../../components/layout/BackButton";
+import { Box, Button, Typography } from "@mui/material";
 
 const DeliveryContainer = () => {
     const { deliveryId } = useParams();
     const [isEditMode, setIsEditMode] = useState(false);
 
+    const { delivery, isDeliveryLoading, isDeliveryError, deliveryError } =
+        useDeliveryQuery(deliveryId);
     const {
-        data: delivery,
-        isDeliveryLoading,
-        isDeliveryError,
-    } = useDeliveryQuery(deliveryId);
-    const {
-        data: deliveryLines,
-        isLoading,
-        isError,
+        deliveryLines,
+        isDeliveryLinesLoading,
+        isDeliveryLinesError,
+        deliveryLinesError,
     } = useDeliveryLinesQuery(deliveryId);
 
     const [newDeliveryLines, setNewDeliveryLines] = useState([]);
     const isDeliveryLinesUpdated = deliveryLines !== newDeliveryLines;
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!isDeliveryLinesLoading) {
             setNewDeliveryLines(deliveryLines);
         }
-    }, [isLoading, deliveryLines]);
+    }, [isDeliveryLinesLoading, deliveryLines]);
 
-    if (isDeliveryLoading || isLoading) {
+    if (isDeliveryLoading || isDeliveryLinesLoading) {
         return <Loading />;
     }
 
-    if (isDeliveryError || isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isDeliveryError) {
+        return <ErrorMessage message={deliveryError.message} />;
+    }
+
+    if (isDeliveryLinesError) {
+        return <ErrorMessage message={deliveryLinesError.message} />;
     }
 
     const handleReceipt = () => {
         setIsEditMode(true);
     };
+
+    if (delivery.status === "terminée") {
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    minHeight: "100vh",
+                }}
+            >
+                <Box m={2}>
+                    <Typography variant="h4">
+                        Livraison n°{delivery.delivery_id} - archivée - Chantier
+                        : {delivery.worksite.city} - {delivery.worksite.name}{" "}
+                    </Typography>
+                </Box>
+                <Box
+                    m={2}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <BackButton />
+                </Box>
+            </Box>
+        );
+    }
 
     return (
         <Box
@@ -52,9 +84,6 @@ const DeliveryContainer = () => {
                 minHeight: "100vh",
             }}
         >
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <Box m={2}>
                 <Typography variant="h4">
                     Livraison n°{delivery.delivery_id} - Chantier :{" "}

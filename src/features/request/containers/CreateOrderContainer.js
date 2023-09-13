@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useCart } from "../../products/context/CartContext";
+import React, { useState } from "react";
 import CreateOrderTable from "../components/CreateOrderTable";
 import WorksiteSelector from "../components/WorksiteSelector";
 import OrderButton from "../components/OrderButton";
 import DateTimePickerComponent from "../../../components/forms/DateTimePickerComponent";
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import ErrorMessage from "../../../components/layout/ErrorMessage";
+import { Box, Typography } from "@mui/material";
 
 const OrderContainer = () => {
-    const { cart } = useCart();
     const [selectedWorksite, setSelectedWorksite] = useState("");
     const [selectedDateTime, setSelectedDateTime] = useState(new Date());
 
@@ -19,9 +18,6 @@ const OrderContainer = () => {
                 minHeight: "100vh",
             }}
         >
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <Box m={2}>
                 <Typography variant="h4">Nouvelle commande</Typography>
             </Box>
@@ -40,9 +36,14 @@ const OrderContainer = () => {
                     setSelectedDateTime={setSelectedDateTime}
                 />
             </Box>
-            <Box m={2}>
-                <CreateOrderTable />
-            </Box>
+            {selectedWorksite ? (
+                <Box m={2}>
+                    <CreateOrderTable worksite={selectedWorksite} />
+                </Box>
+            ) : (
+                <ErrorMessage message={"Veuillez sélectionner un chantier"} />
+            )}
+
             <Box m={2}>
                 <OrderButton
                     worksite={selectedWorksite}

@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const ReturnContainer = () => {
     return (
@@ -9,9 +9,6 @@ const ReturnContainer = () => {
                 minHeight: "100vh",
             }}
         >
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <Typography>Retour</Typography>
         </Box>
     );

@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
-import {
-    AppBar,
-    Grid,
-    Box,
-    useMediaQuery,
-    useTheme,
-    Toolbar,
-} from "@mui/material";
+import { Grid, Box, useMediaQuery, useTheme } from "@mui/material";
 import CategoryDrawer from "../components/CategoryDrawer";
 import MobileCategoryDrawer from "../components/MobileCategoryDrawer";
 import CartDrawer from "../components/CartDrawer";
@@ -33,9 +26,6 @@ const ProductContainer = () => {
                 minHeight: "100vh",
             }}
         >
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <Box
                 sx={{
                     display: "flex",

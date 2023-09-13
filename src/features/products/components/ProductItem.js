@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Card,
     CardContent,
@@ -16,7 +16,7 @@ const ProductItem = ({ product, handleOpen, handleAdd }) => {
             <CardMedia
                 component="img"
                 height="140"
-                image={product.imageUrl}
+                image={product.image}
                 alt={product.name}
             />
             <CardContent>

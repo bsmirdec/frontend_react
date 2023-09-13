@@ -11,26 +11,23 @@ const useStocksForWorksiteQuery = (worksiteId) => {
             );
             return response.data;
         } catch (error) {
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-            ) {
-                throw error.response.data.message;
-            } else if (error.message) {
-                throw error.message;
-            } else {
-                throw error;
-            }
+            throw error;
         }
     };
-    return useQuery(
+    const { data, isLoading, isError, error } = useQuery(
         ["stocks-for-worksite", worksiteId],
         () => fetchWorksiteStocks(worksiteId),
         {
             // You can add additional options here
         },
     );
+
+    return {
+        stocks: data,
+        isStocksLoading: isLoading,
+        isStocksError: isError,
+        stocksError: error,
+    };
 };
 
 export default useStocksForWorksiteQuery;

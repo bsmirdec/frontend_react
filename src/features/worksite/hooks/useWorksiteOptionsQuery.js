@@ -13,7 +13,17 @@ const useWorksiteOptionsQuery = () => {
         }
     };
 
-    return useQuery("worksite-options", () => fetchWorksiteOptions(), {});
+    const { data, isLoading, isError, error } = useQuery(
+        "worksite-options",
+        () => fetchWorksiteOptions(),
+        {},
+    );
+    return {
+        worksiteOptions: data,
+        isWorksiteOptionsLoading: isLoading,
+        isWorksiteOptionsError: isError,
+        worksiteOptionsError: error,
+    };
 };
 
 export default useWorksiteOptionsQuery;

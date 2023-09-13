@@ -13,7 +13,16 @@ const useStaffListQuery = (userId) => {
         }
     };
 
-    return useQuery(["staff", userId], () => fetchStaffList());
+    const { data, isLoading, isError, error } = useQuery(
+        ["staff", userId],
+        () => fetchStaffList(),
+    );
+    return {
+        staffData: data,
+        isStaffLoading: isLoading,
+        isStaffError: isError,
+        staffError: error,
+    };
 };
 
 export default useStaffListQuery;

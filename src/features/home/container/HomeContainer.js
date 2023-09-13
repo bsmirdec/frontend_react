@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Typography, Grid, Paper } from "@mui/material";
 import OrderTable from "../../request/components/OrderTable";
-import NotificationsComponent from "../../notifications/components/NotificationsList";
+import DeliveryTable from "../../deliveries/components/DeliveryTable";
 
 const Home = () => {
     return (
@@ -21,9 +21,9 @@ const Home = () => {
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} style={{ padding: "1rem" }}>
                         <Typography variant="h5" component="h2" gutterBottom>
-                            Notifications
+                            Livraisons
                         </Typography>
-                        <NotificationsComponent />
+                        <DeliveryTable />
                     </Paper>
                 </Grid>
             </Grid>

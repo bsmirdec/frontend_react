@@ -98,6 +98,7 @@ export default function Login() {
                     position,
                     manager,
                     permissions,
+                    threshold,
                 });
 
                 if (employeeId) {

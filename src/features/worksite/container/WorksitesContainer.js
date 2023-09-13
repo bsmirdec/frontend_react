@@ -3,19 +3,15 @@ import React, { useEffect, useState } from "react";
 import { useBusiness } from "../../permissions/context/BusinessContext";
 import WorksiteList from "../components/WorksiteList";
 import WorksiteContainer from "./WorksiteContainer";
-import useWorksiteListQuery from "../hooks/useWorksiteListQuery";
 import useWorksitesForEmployee from "../../employees/hooks/useWorksitesForEmployee";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 
 function WorksitesContainer() {
     const { businessData, setBusinessData } = useBusiness();
-    const {
-        data: worksitesData,
-        isLoading,
-        isError,
-    } = useWorksitesForEmployee(businessData.employeeId);
+    const { worksites, isWorksitesLoading, isWorksitesError, worksitesError } =
+        useWorksitesForEmployee(businessData.employeeId);
     const [activeWorksite, setActiveWorksite] = useState(null);
 
     useEffect(() => {
@@ -25,18 +21,18 @@ function WorksitesContainer() {
         }));
     }, [activeWorksite, setBusinessData]);
 
-    if (isLoading) {
+    if (isWorksitesLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isWorksitesError) {
+        return <ErrorMessage message={worksitesError.message} />;
     }
 
     return (
         <div style={{ display: "flex" }}>
             <WorksiteList
-                worksites={worksitesData}
+                worksites={worksites}
                 activeWorksite={activeWorksite}
                 setActiveWorksite={setActiveWorksite}
             />
@@ -56,18 +52,13 @@ function WorksitesContainer() {
                             textAlign="center"
                             my={3}
                         >
-                            <AppBar position="static">
-                                <Toolbar />
-                            </AppBar>
-                            <Box>
-                                <Typography
-                                    variant="body1"
-                                    component="p"
-                                    sx={{ margin: "auto", fontSize: "2em" }}
-                                >
-                                    Sélectionnez un chantier
-                                </Typography>
-                            </Box>
+                            <Typography
+                                variant="body1"
+                                component="p"
+                                sx={{ margin: "auto", fontSize: "2em" }}
+                            >
+                                Sélectionnez un chantier
+                            </Typography>
                         </Box>
                     )}
                 </React.Fragment>

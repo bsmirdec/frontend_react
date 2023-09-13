@@ -24,6 +24,16 @@ export function CartProvider({ children }) {
         }
     };
 
+    const changeQuantity = (productId, value) => {
+        const updatedCart = cart.map((item) => {
+            if (item.product.product_id === productId) {
+                return { ...item, quantity: value };
+            }
+            return item;
+        });
+        setCart(updatedCart);
+    };
+
     const incrementQuantity = (productId) => {
         const updatedCart = cart.map((item) => {
             if (item.product.product_id === productId) {
@@ -61,6 +71,7 @@ export function CartProvider({ children }) {
                 cart,
                 setCart,
                 addToCart,
+                changeQuantity,
                 incrementQuantity,
                 decrementQuantity,
                 removeFromCart,

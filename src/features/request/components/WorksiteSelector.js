@@ -7,18 +7,15 @@ import { Box, Typography, FormControl, Select, MenuItem } from "@mui/material";
 
 const WorksiteSelector = ({ selectedWorksite, setSelectedWorksite }) => {
     const { businessData } = useBusiness();
-    const {
-        data: worksites,
-        isLoading,
-        isError,
-    } = useWorksitesForEmployeeQuery(businessData.employeeId);
+    const { worksites, isWorksitesLoading, isWorksitesError, worksitesError } =
+        useWorksitesForEmployeeQuery(businessData.employeeId);
 
-    if (isLoading) {
+    if (isWorksitesLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isWorksitesError) {
+        return <ErrorMessage message={worksitesError.message} />;
     }
 
     return (

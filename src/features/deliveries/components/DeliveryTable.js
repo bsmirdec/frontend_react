@@ -18,17 +18,18 @@ import {
 const DeliveryTable = () => {
     const { businessData } = useBusiness();
     const {
-        data: deliveries,
-        isLoading,
-        error,
+        deliveries,
+        isDeliveriesLoading,
+        isDeliveriesError,
+        deliveriesError,
     } = useDeliveryListForEmployeeQuery(businessData.employeeId);
 
-    if (isLoading) {
+    if (isDeliveriesLoading) {
         return <Loading />;
     }
 
-    if (error) {
-        return <ErrorMessage message={error.message} />;
+    if (isDeliveriesError) {
+        return <ErrorMessage message={deliveriesError.message} />;
     }
 
     if (!deliveries || !Array.isArray(deliveries)) {

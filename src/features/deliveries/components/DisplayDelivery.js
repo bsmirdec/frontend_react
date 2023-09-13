@@ -19,16 +19,6 @@ const DisplayDelivery = ({
     newDeliveryLines,
     setNewDeliveryLines,
 }) => {
-    const incrementQuantity = (product_id) => {
-        const updatedDeliveryLines = newDeliveryLines.map((item) => {
-            if (item.product.product_id === product_id) {
-                return { ...item, quantity: item.quantity + 1 };
-            }
-            return item;
-        });
-        setNewDeliveryLines(updatedDeliveryLines);
-    };
-
     const decrementQuantity = (product_id) => {
         const updatedDeliveryLines = newDeliveryLines.map((item) => {
             if (item.product.product_id === product_id) {

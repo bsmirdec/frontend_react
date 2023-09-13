@@ -10,7 +10,7 @@ import MobilHomeLink from "./headercomponents/MobliHomeLink";
 import MobilNavMenu from "./headercomponents/MobilNavMenu";
 import NavMenu from "./headercomponents/NavMenu";
 import CartIcon from "./headercomponents/CartIcon";
-import Notifications from "./headercomponents/Notifications";
+import NotificationsMenu from "./headercomponents/NotificationsMenu";
 
 // Material UI
 import { AppBar, Toolbar, Container } from "@mui/material";
@@ -42,7 +42,7 @@ function Header() {
 
     return (
         <AppBar
-            position="fixed"
+            position="sticky"
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
             style={{ backgroundColor: theme.palette.primary.light }}
         >
@@ -56,7 +56,7 @@ function Header() {
                         <MobilHomeLink theme={theme} />
                         <NavMenu pageList={pageList} />
                         <CartIcon />
-                        <Notifications />
+                        <NotificationsMenu />
                         <UserMenu />
                     </Toolbar>
                 )}

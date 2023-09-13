@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useBusiness } from "../../permissions/context/BusinessContext";
 import useOrderQuery from "../hooks/useOrderQuery";
 import useOrderLinesQuery from "../hooks/useOrderLinesQuery";
 import OrderValidationButton from "../components/OrderValidationButton";
@@ -8,11 +9,13 @@ import DisplayOrder from "../components/DisplayOrder";
 import DateTimePickerComponent from "../../../components/forms/DateTimePickerComponent";
 import Loading from "../../../components/layout/Loading";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
-import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
+import BackButton from "../../../components/layout/BackButton";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 
 const OrderContainer = () => {
     const theme = useTheme();
+    const { businessData } = useBusiness();
     const { orderId } = useParams();
     const [isEditMode, setIsEditMode] = useState(false);
 
@@ -58,6 +61,15 @@ const OrderContainer = () => {
         );
     }
 
+    const canEmployeeValidate = () => {
+        const employeeThreshold = businessData.threshold;
+        if (employeeThreshold > order.validation) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     const handleUpdate = () => {
         setIsEditMode(true);
         setIsAddCartVisible(true);
@@ -68,6 +80,36 @@ const OrderContainer = () => {
         setIsEditMode(false);
     };
 
+    if (order.status === "confirmé") {
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    minHeight: "100vh",
+                }}
+            >
+                <Box m={2}>
+                    <Typography variant="h4">
+                        La Commande n°{order.order_id} - Chantier :{" "}
+                        {order.worksite.city} - {order.worksite.name} est
+                        archivée.
+                    </Typography>
+                </Box>
+                <Box
+                    m={2}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <BackButton />
+                </Box>
+            </Box>
+        );
+    }
+
     return (
         <Box
             sx={{
@@ -76,9 +118,6 @@ const OrderContainer = () => {
                 minHeight: "100vh",
             }}
         >
-            <AppBar position="static">
-                <Toolbar />
-            </AppBar>
             <Box m={2}>
                 <Typography variant="h4">
                     Commande n°{order.order_id} - Chantier :{" "}
@@ -158,32 +197,63 @@ const OrderContainer = () => {
                             Modifier
                         </Button>
                     )}
-                    <Box m={2}>
-                        <Grid container spacing={2} justifyContent="center">
-                            <Grid item>
-                                <OrderValidationButton
-                                    isOrderLinesUpdated={isOrderLinesUpdated}
-                                    order={newOrder}
-                                    orderLines={
-                                        isOrderLinesUpdated
-                                            ? newOrderLines
-                                            : orderLines
-                                    }
-                                />
+                    {canEmployeeValidate() ? (
+                        <Box m={2}>
+                            <Grid
+                                container
+                                spacing={2}
+                                justifyContent="center"
+                                style={{
+                                    display: canEmployeeValidate()
+                                        ? "flex"
+                                        : "none",
+                                }}
+                            >
+                                <Grid item>
+                                    <OrderValidationButton
+                                        isOrderLinesUpdated={
+                                            isOrderLinesUpdated
+                                        }
+                                        order={newOrder}
+                                        orderLines={
+                                            isOrderLinesUpdated
+                                                ? newOrderLines
+                                                : orderLines
+                                        }
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <OrderRejectButton
+                                        isOrderLinesUpdated={
+                                            isOrderLinesUpdated
+                                        }
+                                        order={newOrder}
+                                        orderLines={
+                                            isOrderLinesUpdated
+                                                ? newOrderLines
+                                                : orderLines
+                                        }
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <OrderRejectButton
-                                    isOrderLinesUpdated={isOrderLinesUpdated}
-                                    order={newOrder}
-                                    orderLines={
-                                        isOrderLinesUpdated
-                                            ? newOrderLines
-                                            : orderLines
-                                    }
-                                />
-                            </Grid>
-                        </Grid>
-                    </Box>
+                        </Box>
+                    ) : (
+                        <Box
+                            m={5}
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Typography
+                                variant="h5"
+                                color={theme.palette.primary.main}
+                            >
+                                En attente de validation d'un supérieur
+                            </Typography>
+                        </Box>
+                    )}
                 </Box>
             )}
         </Box>

@@ -127,7 +127,7 @@ const router = createBrowserRouter(
                     <RequireAuth>
                         <RequirePermission
                             allowedPermissions={[
-                                PERMISSIONS.request_view_list.code,
+                                PERMISSIONS.product_view_list.code,
                             ]}
                         >
                             <ProductContainer />

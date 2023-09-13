@@ -1,13 +1,13 @@
 import { useQuery } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
-const useWorksiteQuery = (worksiteId) => {
+const useMaxStocksForWorksiteQuery = (worksiteId) => {
     const axiosPrivate = useAxiosPrivate();
 
-    const fetchWorksiteDetails = async (worksiteId) => {
+    const fetchWorksiteMaxStocks = async (worksiteId) => {
         try {
             const response = await axiosPrivate.get(
-                `/worksites/${worksiteId}/get`,
+                `/stocks/worksite/max/${worksiteId}`,
             );
             return response.data;
         } catch (error) {
@@ -15,18 +15,18 @@ const useWorksiteQuery = (worksiteId) => {
         }
     };
     const { data, isLoading, isError, error } = useQuery(
-        ["worksite", worksiteId],
-        () => fetchWorksiteDetails(worksiteId),
+        ["max-stocks-for-worksite", worksiteId],
+        () => fetchWorksiteMaxStocks(worksiteId),
         {
             // You can add additional options here
         },
     );
     return {
-        worksite: data,
-        isWorksiteLoading: isLoading,
-        isWorksiteError: isError,
-        worksiteError: error,
+        maxStocks: data,
+        isMaxStocksLoading: isLoading,
+        isMaxStocksError: isError,
+        maxStocksError: error,
     };
 };
 
-export default useWorksiteQuery;
+export default useMaxStocksForWorksiteQuery;

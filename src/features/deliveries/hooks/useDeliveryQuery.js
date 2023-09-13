@@ -17,7 +17,16 @@ const useDeliveryQuery = (deliveryId) => {
         }
     };
 
-    return useQuery("delivery", getDelivery);
+    const { data, isLoading, isError, error } = useQuery(
+        "delivery",
+        getDelivery,
+    );
+    return {
+        delivery: data,
+        isDeliveryLoading: isLoading,
+        isDeliveryError: isError,
+        deliveryError: error,
+    };
 };
 
 export default useDeliveryQuery;

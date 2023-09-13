@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "react-query";
 import useAxiosPrivate from "../../auth/hooks/useAxiosPrivate";
 
-const useUpdatePermissionsMutation = () => {
+const useUpdateEmployeeMutation = () => {
     const queryClient = useQueryClient();
     const axiosPrivate = useAxiosPrivate();
 
-    const updatePermissions = async (updatedEmployee) => {
+    const updateEmployee = async (updatedEmployee) => {
         try {
             const response = await axiosPrivate.put(
                 `employees/${updatedEmployee.employee_id}/update`,
@@ -18,14 +18,14 @@ const useUpdatePermissionsMutation = () => {
     };
 
     return useMutation(
-        "updated-permissions",
-        (updatedEmployee) => updatePermissions(updatedEmployee),
+        "update-employee",
+        (updatedEmployee) => updateEmployee(updatedEmployee),
         {
             onSuccess: () => {
-                queryClient.invalidateQueries("permissions");
+                queryClient.invalidateQueries("permissions", "staff");
             },
         },
     );
 };
 
-export default useUpdatePermissionsMutation;
+export default useUpdateEmployeeMutation;

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import QuantitySelector from "../../../components/forms/QuantitySelector";
 import {
@@ -17,6 +18,7 @@ import { Delete as DeleteIcon } from "@mui/icons-material";
 
 const CartModal = ({ open, onClose }) => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const {
         cart,
         setCart,
@@ -30,7 +32,8 @@ const CartModal = ({ open, onClose }) => {
     };
 
     const handleOrder = () => {
-        console.log("écran de confirmation");
+        onClose();
+        navigate("request/order");
     };
 
     return (
@@ -84,7 +87,11 @@ const CartModal = ({ open, onClose }) => {
                                 </ListItem>
                             ))}
                         </List>
-                        <Button variant="contained" onClick={handleOrder}>
+                        <Button
+                            variant="contained"
+                            style={{ margin: "5px" }}
+                            onClick={handleOrder}
+                        >
                             Passer Commande
                         </Button>
                         <Button

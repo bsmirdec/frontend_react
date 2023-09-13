@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import ErrorMessage from "../../../components/layout/ErrorMessage";
-import useUpdatePermissionsMutation from "../hooks/useUpdatePermissionsMutation";
+import useUpdateEmployeeMutation from "../hooks/useUpdateEmployeeMutation";
 import { PERMISSIONS } from "../../permissions/PERMISSIONS";
 
 const PermissionsDisplay = ({
@@ -17,7 +17,7 @@ const PermissionsDisplay = ({
     setSelectedEmployee,
     onClose,
 }) => {
-    const updatePermissions = useUpdatePermissionsMutation();
+    const updateEmployee = useUpdateEmployeeMutation();
     const [permissionsState, setPermissionsState] = useState(
         selectedEmployee.permissions,
     );
@@ -35,9 +35,7 @@ const PermissionsDisplay = ({
             ...selectedEmployee,
             permissions: permissionsState,
         };
-        const newEmployee = await updatePermissions.mutateAsync(
-            updatedEmployee,
-        );
+        const newEmployee = await updateEmployee.mutateAsync(updatedEmployee);
         setSelectedEmployee((prevEmployee) => ({
             ...prevEmployee,
             permissions: newEmployee.permissions,
@@ -56,6 +54,10 @@ const PermissionsDisplay = ({
                 transform: "translate(-50%, -50%)",
                 bgcolor: "background.paper",
                 boxShadow: 24,
+                margin: "20px",
+                padding: "20px",
+                maxHeight: "60%",
+                overflow: "auto",
                 p: 4,
             }}
         >

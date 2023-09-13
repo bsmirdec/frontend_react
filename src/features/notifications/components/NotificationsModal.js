@@ -59,21 +59,22 @@ const NotificationsModal = ({
     const { auth } = useAuth();
     const navigate = useNavigate();
     const {
-        data: notificationsData,
-        isLoading,
-        isError,
+        notifications,
+        isNotificationsError,
+        isNotificationsLoading,
+        notificationsError,
     } = useNotificationQuery(auth.userId);
     const deleteNotification = useDeleteNotificationMutation();
     const updateReadNotification = useUpdateReadNotificationMutation();
 
     useEffect(() => {
-        if (notificationsData) {
-            const newNotificationsCount = notificationsData.filter(
+        if (notifications) {
+            const newNotificationsCount = notifications.filter(
                 (notification) => !notification.is_read,
             ).length;
             setNewNotifications(newNotificationsCount);
         }
-    }, [notificationsData, setNewNotifications]);
+    }, [notifications, setNewNotifications]);
 
     const handleNotificationClick = async (notification) => {
         if (!notification.is_read) {
@@ -95,15 +96,15 @@ const NotificationsModal = ({
         console.log(deleteNotif);
     };
 
-    if (isLoading) {
+    if (isNotificationsLoading) {
         return <Loading />;
     }
 
-    if (isError) {
-        return <ErrorMessage message={isError.message} />;
+    if (isNotificationsError) {
+        return <ErrorMessage message={notificationsError.message} />;
     }
 
-    const sortedNotifications = notificationsData.slice().sort((a, b) => {
+    const sortedNotifications = notifications.slice().sort((a, b) => {
         return new Date(b.created_at) - new Date(a.created_at);
     });
 

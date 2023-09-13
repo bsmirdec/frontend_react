@@ -18,6 +18,7 @@ const UserMenu = () => {
     const theme = useTheme();
     const { businessData } = useBusiness();
     const [anchorElUser, setAnchorElUser] = useState(null);
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
